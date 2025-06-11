@@ -1,0 +1,72 @@
+{
+  "id": "b1c2d3e4-f5g6-7890-abcd-ef1234567890",
+  "name": "Bookings Hub Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userRole",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "businessId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "serviceId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "bookingId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userEmail",
+      "value": "test@example.com",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userPassword",
+      "value": "password123",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "businessEmail",
+      "value": "business@example.com",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "businessPassword",
+      "value": "password123",
+      "type": "default",
+      "enabled": true
+    }
+  ]
+}

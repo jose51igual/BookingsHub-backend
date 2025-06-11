@@ -1,0 +1,260 @@
+{"level":"info","message":"2025-06-11T21:21:44.994Z - POST /api/auth/register","timestamp":"2025-06-11 23:21:44"}
+{"email":"avila51jose@gmail.com","level":"info","message":"Registration attempt initiated","timestamp":"2025-06-11 23:21:44"}
+{"error":"\nInvalid `prisma.users.create()` invocation in\n/home/jose/Documentos/ionic-bookings-hub/backend/models/authModel.js:24:37\n\n  21 static async createUser(name, email, password, role, phone = null) {\n  22   const hashedPassword = await bcrypt.hash(password, 10);\n  23   \n→ 24   const user = await prisma.users.create({\n         data: {\n           name: \"Jose\",\n           email: \"avila51jose@gmail.com\",\n           password: \"$2b$10$DyFa9DYZfZvHXPXGud4YbOi3q4mOhBlp5BKG19wb2RHVnrIFnyXV2\",\n           role: \"cliente\",\n           phone: \"603750516\"\n                  ~~~~~~~~~~~\n         }\n       })\n\nArgument `phone`: Invalid value provided. Expected Int or Null, provided String.","level":"error","message":"Registration error occurred","stack":"PrismaClientValidationError: \nInvalid `prisma.users.create()` invocation in\n/home/jose/Documentos/ionic-bookings-hub/backend/models/authModel.js:24:37\n\n  21 static async createUser(name, email, password, role, phone = null) {\n  22   const hashedPassword = await bcrypt.hash(password, 10);\n  23   \n→ 24   const user = await prisma.users.create({\n         data: {\n           name: \"Jose\",\n           email: \"avila51jose@gmail.com\",\n           password: \"$2b$10$DyFa9DYZfZvHXPXGud4YbOi3q4mOhBlp5BKG19wb2RHVnrIFnyXV2\",\n           role: \"cliente\",\n           phone: \"603750516\"\n                  ~~~~~~~~~~~\n         }\n       })\n\nArgument `phone`: Invalid value provided. Expected Int or Null, provided String.\n    at kn (/home/jose/Documentos/ionic-bookings-hub/backend/generated/prisma/runtime/library.js:32:1363)\n    at Zn.handleRequestError (/home/jose/Documentos/ionic-bookings-hub/backend/generated/prisma/runtime/library.js:124:7102)\n    at Zn.handleAndLogRequestError (/home/jose/Documentos/ionic-bookings-hub/backend/generated/prisma/runtime/library.js:124:6784)\n    at Zn.request (/home/jose/Documentos/ionic-bookings-hub/backend/generated/prisma/runtime/library.js:124:6491)\n    at async l (/home/jose/Documentos/ionic-bookings-hub/backend/generated/prisma/runtime/library.js:133:9778)\n    at async AuthModel.createUser (/home/jose/Documentos/ionic-bookings-hub/backend/models/authModel.js:24:18)\n    at async register (/home/jose/Documentos/ionic-bookings-hub/backend/controllers/authController.js:45:20)","timestamp":"2025-06-11 23:21:45"}
+{"level":"info","message":"Servidor ejecutándose en puerto: 3000","timestamp":"2025-06-11 23:29:52"}
+{"level":"info","message":"Documentación API: http://localhost:3000/api-docs","timestamp":"2025-06-11 23:29:52"}
+{"level":"info","message":"2025-06-11T21:30:40.355Z - POST /api/auth/register","timestamp":"2025-06-11 23:30:40"}
+{"email":"avila51jose@gmail.com","level":"info","message":"Registration attempt initiated","timestamp":"2025-06-11 23:30:40"}
+{"email":"avila51jose@gmail.com","level":"info","message":"User registered successfully","timestamp":"2025-06-11 23:30:40","userId":31}
+{"level":"info","message":"2025-06-11T21:30:54.003Z - POST /api/auth/login","timestamp":"2025-06-11 23:30:54"}
+{"email":"avila51jose@gmail.com","level":"info","message":"Login attempt initiated","timestamp":"2025-06-11 23:30:54"}
+{"email":"avila51jose@gmail.com","level":"info","message":"Login successful","role":"cliente","timestamp":"2025-06-11 23:30:54","userId":31}
+{"level":"info","message":"2025-06-11T21:30:56.506Z - GET /api/users/profile","timestamp":"2025-06-11 23:30:56"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:30:56"}
+{"email":"avila51jose@gmail.com","id":31,"level":"info","message":"User authenticated successfully:","role":"cliente","timestamp":"2025-06-11 23:30:56","url":"/api/users/profile"}
+{"level":"info","message":"Getting user profile for ID: 31","timestamp":"2025-06-11 23:30:56"}
+{"level":"info","message":"2025-06-11T21:30:58.572Z - GET /api/bookings/user","timestamp":"2025-06-11 23:30:58"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:30:58"}
+{"email":"avila51jose@gmail.com","id":31,"level":"info","message":"User authenticated successfully:","role":"cliente","timestamp":"2025-06-11 23:30:58","url":"/api/bookings/user"}
+{"level":"info","message":"Getting user bookings","role":"cliente","timestamp":"2025-06-11 23:30:58","userId":31}
+{"level":"debug","message":"BookingModel.getUserBookings - Buscando reservas para userId:","timestamp":"2025-06-11 23:30:58"}
+{"level":"debug","message":"Resultados encontrados:","timestamp":"2025-06-11 23:30:58"}
+{"count":0,"level":"info","message":"User bookings retrieved successfully","timestamp":"2025-06-11 23:30:58","userId":31}
+{"level":"info","message":"2025-06-11T21:31:00.105Z - GET /api/businesses","timestamp":"2025-06-11 23:31:00"}
+{"level":"info","message":"2025-06-11T21:31:03.336Z - GET /api/businesses/1","timestamp":"2025-06-11 23:31:03"}
+{"level":"info","message":"2025-06-11T21:31:03.338Z - GET /api/businesses/1/services","timestamp":"2025-06-11 23:31:03"}
+{"businessId":1,"level":"info","message":"Getting business services","params":{"id":1},"rawBusinessId":1,"timestamp":"2025-06-11 23:31:03"}
+{"businessId":1,"count":3,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:31:03"}
+{"level":"info","message":"2025-06-11T21:31:03.344Z - GET /api/reviews/business/1","timestamp":"2025-06-11 23:31:03"}
+{"businessId":1,"level":"info","message":"Business reviews retrieved successfully","reviewsCount":10,"timestamp":"2025-06-11 23:31:03"}
+{"level":"info","message":"2025-06-11T21:31:04.528Z - GET /api/services/1","timestamp":"2025-06-11 23:31:04"}
+{"level":"info","message":"Service retrieved successfully","serviceId":1,"serviceName":"flimsy conservation","timestamp":"2025-06-11 23:31:04"}
+{"level":"info","message":"2025-06-11T21:31:04.534Z - GET /api/businesses/1","timestamp":"2025-06-11 23:31:04"}
+{"level":"info","message":"2025-06-11T21:31:04.607Z - GET /api/services/1/availability","timestamp":"2025-06-11 23:31:04"}
+{"employeeId":null,"level":"info","message":"Getting service availability","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:04","year":2025}
+{"bookings":[{"date":"2025-06-17","duration":30,"time":"08:00"},{"date":"2025-06-03","duration":30,"time":"09:00"},{"date":"2025-06-10","duration":30,"time":"12:30"},{"date":"2025-06-05","duration":30,"time":"13:00"},{"date":"2025-06-12","duration":30,"time":"12:00"}],"bookingsCount":5,"employeeId":null,"level":"info","message":"Existing bookings found","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:04","year":2025}
+{"dayBookings":1,"dayBookingsDetails":[{"duration":30,"time":"12:30"}],"level":"info","message":"Processing day 2025-06-10","serviceId":1,"timestamp":"2025-06-11 23:31:04","totalBookings":5}
+{"availableSlots":23,"availableSlotsDetail":["09:00","09:30","10:00","10:30","11:00","11:30","12:00","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30"],"level":"info","message":"Finished processing day 2025-06-10","occupiedSlots":["12:30"],"serviceId":1,"timestamp":"2025-06-11 23:31:04","totalSlots":24}
+{"availableDays":25,"employeeId":null,"level":"info","message":"Service availability calculated successfully","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:04","totalDays":30,"year":2025}
+{"level":"info","message":"2025-06-11T21:31:04.619Z - GET /api/services/1/employees","timestamp":"2025-06-11 23:31:04"}
+{"count":3,"level":"info","message":"Service employees retrieved successfully","serviceId":1,"timestamp":"2025-06-11 23:31:04"}
+{"level":"info","message":"2025-06-11T21:31:11.776Z - GET /api/services/1/availability","timestamp":"2025-06-11 23:31:11"}
+{"employeeId":2,"level":"info","message":"Getting service availability","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:11","year":2025}
+{"bookings":[],"bookingsCount":0,"employeeId":2,"level":"info","message":"Existing bookings found","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:11","year":2025}
+{"dayBookings":0,"dayBookingsDetails":[],"level":"info","message":"Processing day 2025-06-10","serviceId":1,"timestamp":"2025-06-11 23:31:11","totalBookings":0}
+{"availableSlots":24,"availableSlotsDetail":["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30"],"level":"info","message":"Finished processing day 2025-06-10","occupiedSlots":[],"serviceId":1,"timestamp":"2025-06-11 23:31:11","totalSlots":24}
+{"availableDays":25,"employeeId":2,"level":"info","message":"Service availability calculated successfully","month":6,"serviceId":1,"timestamp":"2025-06-11 23:31:11","totalDays":30,"year":2025}
+{"level":"info","message":"2025-06-11T21:31:17.765Z - POST /api/bookings","timestamp":"2025-06-11 23:31:17"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:31:17"}
+{"email":"avila51jose@gmail.com","id":31,"level":"info","message":"User authenticated successfully:","role":"cliente","timestamp":"2025-06-11 23:31:17","url":"/api/bookings"}
+{"booking_date":"2025-06-12T00:00:00.000Z","booking_time":"12:00","business_id":1,"employee_id":2,"level":"info","message":"Creating new booking","service_id":1,"timestamp":"2025-06-11 23:31:17","user_id":31}
+{"bookingId":2397,"level":"info","message":"Booking created successfully","timestamp":"2025-06-11 23:31:17","userId":31}
+{"level":"info","message":"2025-06-11T21:31:17.825Z - GET /api/bookings/user","timestamp":"2025-06-11 23:31:17"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:31:17"}
+{"email":"avila51jose@gmail.com","id":31,"level":"info","message":"User authenticated successfully:","role":"cliente","timestamp":"2025-06-11 23:31:17","url":"/api/bookings/user"}
+{"level":"info","message":"Getting user bookings","role":"cliente","timestamp":"2025-06-11 23:31:17","userId":31}
+{"level":"debug","message":"BookingModel.getUserBookings - Buscando reservas para userId:","timestamp":"2025-06-11 23:31:17"}
+{"level":"debug","message":"Resultados encontrados:","timestamp":"2025-06-11 23:31:17"}
+{"level":"debug","message":"Primera reserva encontrada:","timestamp":"2025-06-11 23:31:17"}
+{"count":1,"level":"info","message":"User bookings retrieved successfully","timestamp":"2025-06-11 23:31:17","userId":31}
+{"level":"info","message":"2025-06-11T21:35:37.398Z - GET /api/users/profile","timestamp":"2025-06-11 23:35:37"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:35:37"}
+{"email":"avila51jose@gmail.com","id":31,"level":"info","message":"User authenticated successfully:","role":"cliente","timestamp":"2025-06-11 23:35:37","url":"/api/users/profile"}
+{"level":"info","message":"Getting user profile for ID: 31","timestamp":"2025-06-11 23:35:37"}
+{"level":"info","message":"2025-06-11T21:36:07.073Z - POST /api/auth/register","timestamp":"2025-06-11 23:36:07"}
+{"email":"avila51jose@gmail.com","level":"info","message":"Registration attempt initiated","timestamp":"2025-06-11 23:36:07"}
+{"level":"info","message":"2025-06-11T21:37:35.886Z - POST /api/auth/register","timestamp":"2025-06-11 23:37:35"}
+{"email":"cock@gmail.com","level":"info","message":"Registration attempt initiated","timestamp":"2025-06-11 23:37:35"}
+{"email":"cock@gmail.com","level":"info","message":"User registered successfully","timestamp":"2025-06-11 23:37:35","userId":32}
+{"level":"info","message":"2025-06-11T21:37:50.523Z - POST /api/auth/login","timestamp":"2025-06-11 23:37:50"}
+{"email":"cock@gmail.com","level":"info","message":"Login attempt initiated","timestamp":"2025-06-11 23:37:50"}
+{"email":"cock@gmail.com","level":"info","message":"Login successful","role":"negocio","timestamp":"2025-06-11 23:37:50","userId":32}
+{"level":"info","message":"2025-06-11T21:37:50.869Z - GET /api/analytics/business","timestamp":"2025-06-11 23:37:50"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:37:50"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:37:50","url":"/api/analytics/business?period=1month"}
+{"level":"info","message":"Getting business analytics","period":"1month","timestamp":"2025-06-11 23:37:50","userId":32}
+{"level":"warn","message":"User has no business registered","timestamp":"2025-06-11 23:37:50","userId":32}
+{"level":"info","message":"2025-06-11T21:37:50.878Z - GET /api/analytics/business","timestamp":"2025-06-11 23:37:50"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:37:50"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:37:50","url":"/api/analytics/business?period=1month"}
+{"level":"info","message":"Getting business analytics","period":"1month","timestamp":"2025-06-11 23:37:50","userId":32}
+{"level":"warn","message":"User has no business registered","timestamp":"2025-06-11 23:37:50","userId":32}
+{"level":"info","message":"2025-06-11T21:41:28.056Z - GET /api/businesses/user","timestamp":"2025-06-11 23:41:28"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:41:28"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:41:28","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:41:28.143Z - GET /api/businesses/user","timestamp":"2025-06-11 23:41:28"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:41:28"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:41:28","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:41:32.000Z - GET /api/businesses/user","timestamp":"2025-06-11 23:41:32"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:41:32"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:41:32","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:41:32.013Z - GET /api/businesses/user","timestamp":"2025-06-11 23:41:32"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:41:32"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:41:32","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:45:19.864Z - GET /api/businesses/user","timestamp":"2025-06-11 23:45:19"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:45:19"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:45:19","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:45:19.878Z - GET /api/businesses/user","timestamp":"2025-06-11 23:45:19"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:45:19"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:45:19","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:45:27.183Z - GET /api/businesses/user","timestamp":"2025-06-11 23:45:27"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:45:27"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:45:27","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:45:27.199Z - GET /api/businesses/user","timestamp":"2025-06-11 23:45:27"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:45:27"}
+{"email":"cock@gmail.com","id":32,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:45:27","url":"/api/businesses/user"}
+{"level":"info","message":"Servidor ejecutándose en puerto: 3000","timestamp":"2025-06-11 23:48:25"}
+{"level":"info","message":"Documentación API: http://localhost:3000/api-docs","timestamp":"2025-06-11 23:48:25"}
+{"level":"info","message":"2025-06-11T21:49:29.818Z - POST /api/auth/register","timestamp":"2025-06-11 23:49:29"}
+{"level":"info","message":"2025-06-11T21:49:48.611Z - POST /api/auth/login","timestamp":"2025-06-11 23:49:48"}
+{"email":"jose@gmail.com","level":"info","message":"Login successful","role":"negocio","timestamp":"2025-06-11 23:49:48","userId":33}
+{"level":"info","message":"2025-06-11T21:49:48.996Z - GET /api/analytics/business","timestamp":"2025-06-11 23:49:48"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:48"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:48","url":"/api/analytics/business?period=1month"}
+{"level":"info","message":"Getting business analytics","period":"1month","timestamp":"2025-06-11 23:49:49","userId":33}
+{"businessId":16,"level":"info","message":"Calculating analytics for business","period":"1month","periodDates":{"endDate":"2025-06-11T21:49:49.001Z","startDate":"2025-05-11T21:49:49.001Z"},"timestamp":"2025-06-11 23:49:49"}
+{"analyticsData":{"averageRating":0,"bookingsByMonth":[],"businessId":16,"customerRetention":0,"period":"1month","popularServices":[],"revenueByService":[],"totalBookings":0,"totalRevenue":0,"totalServices":0},"businessId":16,"level":"info","message":"Analytics calculated successfully","period":"1month","timestamp":"2025-06-11 23:49:49"}
+{"level":"info","message":"2025-06-11T21:49:51.746Z - GET /api/businesses/user","timestamp":"2025-06-11 23:49:51"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:51"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:51","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:49:51.900Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:49:51"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:51"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:51","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:49:51","userId":33}
+{"level":"info","message":"2025-06-11T21:49:52.503Z - GET /api/businesses/user","timestamp":"2025-06-11 23:49:52"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:52"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:52","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:49:52.756Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:49:52"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:49:52"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:49:52"}
+{"level":"info","message":"2025-06-11T21:49:53.743Z - GET /api/businesses/1/employees","timestamp":"2025-06-11 23:49:53"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:53"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:53","url":"/api/businesses/1/employees"}
+{"businessId":1,"count":3,"level":"info","message":"Business employees retrieved successfully","timestamp":"2025-06-11 23:49:53"}
+{"level":"info","message":"2025-06-11T21:49:54.950Z - GET /api/analytics/business","timestamp":"2025-06-11 23:49:54"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:54"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:54","url":"/api/analytics/business?period=3months"}
+{"level":"info","message":"Getting business analytics","period":"3months","timestamp":"2025-06-11 23:49:54","userId":33}
+{"businessId":16,"level":"info","message":"Calculating analytics for business","period":"3months","periodDates":{"endDate":"2025-06-11T21:49:54.955Z","startDate":"2025-03-11T22:49:54.955Z"},"timestamp":"2025-06-11 23:49:54"}
+{"analyticsData":{"averageRating":0,"bookingsByMonth":[],"businessId":16,"customerRetention":0,"period":"3months","popularServices":[],"revenueByService":[],"totalBookings":0,"totalRevenue":0,"totalServices":0},"businessId":16,"level":"info","message":"Analytics calculated successfully","period":"3months","timestamp":"2025-06-11 23:49:54"}
+{"level":"info","message":"2025-06-11T21:49:57.009Z - GET /api/businesses/user","timestamp":"2025-06-11 23:49:57"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:57"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:57","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:49:57.156Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:49:57"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:49:57"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:49:57","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:49:57","userId":33}
+{"level":"info","message":"2025-06-11T21:52:36.823Z - GET /api/businesses/user","timestamp":"2025-06-11 23:52:36"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:52:36"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:52:36","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:52:36.867Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:52:36"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:52:36"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:52:36","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:52:36","userId":33}
+{"level":"info","message":"2025-06-11T21:52:46.168Z - GET /api/businesses/user","timestamp":"2025-06-11 23:52:46"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:52:46"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:52:46","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:52:46.404Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:52:46"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:52:46"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:52:46"}
+{"level":"info","message":"2025-06-11T21:53:28.969Z - GET /api/businesses/user","timestamp":"2025-06-11 23:53:28"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:53:28"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:53:28","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:53:29.201Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:53:29"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:53:29"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:53:29"}
+{"level":"info","message":"2025-06-11T21:54:15.680Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:15"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:15"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:15","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:15.896Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:54:15"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:54:15"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:54:15"}
+{"level":"info","message":"2025-06-11T21:54:18.785Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:18"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:18"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:18","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:18.911Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:54:18"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:18"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:18","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:54:18","userId":33}
+{"level":"info","message":"2025-06-11T21:54:35.999Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:35"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:35"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:36","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:36.116Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:54:36"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:36"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:36","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:54:36","userId":33}
+{"level":"info","message":"2025-06-11T21:54:45.322Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:45"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:45"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:45","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:45.398Z - GET /api/bookings/business/16","timestamp":"2025-06-11 23:54:45"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:45"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:45","url":"/api/bookings/business/16"}
+{"businessId":16,"count":0,"level":"info","message":"Business bookings retrieved successfully","timestamp":"2025-06-11 23:54:45","userId":33}
+{"level":"info","message":"2025-06-11T21:54:48.665Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:48"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:48"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:48","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:48.882Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:54:48"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:54:48"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:54:48"}
+{"level":"info","message":"2025-06-11T21:54:50.827Z - GET /api/analytics/business","timestamp":"2025-06-11 23:54:50"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:50"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:50","url":"/api/analytics/business?period=1month"}
+{"level":"info","message":"Getting business analytics","period":"1month","timestamp":"2025-06-11 23:54:50","userId":33}
+{"businessId":16,"level":"info","message":"Calculating analytics for business","period":"1month","periodDates":{"endDate":"2025-06-11T21:54:50.831Z","startDate":"2025-05-11T21:54:50.831Z"},"timestamp":"2025-06-11 23:54:50"}
+{"analyticsData":{"averageRating":0,"bookingsByMonth":[],"businessId":16,"customerRetention":0,"period":"1month","popularServices":[],"revenueByService":[],"totalBookings":0,"totalRevenue":0,"totalServices":0},"businessId":16,"level":"info","message":"Analytics calculated successfully","period":"1month","timestamp":"2025-06-11 23:54:50"}
+{"level":"info","message":"2025-06-11T21:54:52.946Z - GET /api/businesses/user","timestamp":"2025-06-11 23:54:52"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:52"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:52","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:54:53.164Z - GET /api/businesses/16/services","timestamp":"2025-06-11 23:54:53"}
+{"businessId":16,"level":"info","message":"Getting business services","params":{"id":16},"rawBusinessId":16,"timestamp":"2025-06-11 23:54:53"}
+{"businessId":16,"count":0,"level":"info","message":"Business services retrieved successfully","timestamp":"2025-06-11 23:54:53"}
+{"level":"info","message":"2025-06-11T21:54:53.700Z - GET /api/businesses/1/employees","timestamp":"2025-06-11 23:54:53"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:54:53"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:54:53","url":"/api/businesses/1/employees"}
+{"businessId":1,"count":3,"level":"info","message":"Business employees retrieved successfully","timestamp":"2025-06-11 23:54:53"}
+{"level":"info","message":"2025-06-11T21:55:05.722Z - GET /api/analytics/business","timestamp":"2025-06-11 23:55:05"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:55:05"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:55:05","url":"/api/analytics/business?period=3months"}
+{"level":"info","message":"Getting business analytics","period":"3months","timestamp":"2025-06-11 23:55:05","userId":33}
+{"businessId":16,"level":"info","message":"Calculating analytics for business","period":"3months","periodDates":{"endDate":"2025-06-11T21:55:05.726Z","startDate":"2025-03-11T22:55:05.726Z"},"timestamp":"2025-06-11 23:55:05"}
+{"analyticsData":{"averageRating":0,"bookingsByMonth":[],"businessId":16,"customerRetention":0,"period":"3months","popularServices":[],"revenueByService":[],"totalBookings":0,"totalRevenue":0,"totalServices":0},"businessId":16,"level":"info","message":"Analytics calculated successfully","period":"3months","timestamp":"2025-06-11 23:55:05"}
+{"level":"info","message":"2025-06-11T21:55:09.908Z - GET /api/businesses/user","timestamp":"2025-06-11 23:55:09"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:55:09"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:55:09","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T21:55:16.046Z - PUT /api/businesses/16","timestamp":"2025-06-11 23:55:16"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:55:16"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:55:16","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T21:55:16.055Z - PUT /api/businesses/16","timestamp":"2025-06-11 23:55:16"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:55:16"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:55:16","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T21:57:17.647Z - GET /api/businesses/user","timestamp":"2025-06-11 23:57:17"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-11 23:57:17"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-11 23:57:17","url":"/api/businesses/user"}
+{"level":"info","message":"Servidor ejecutándose en puerto: 3000","timestamp":"2025-06-12 00:10:35"}
+{"level":"info","message":"Documentación API: http://localhost:3000/api-docs","timestamp":"2025-06-12 00:10:35"}
+{"level":"info","message":"2025-06-11T22:10:39.390Z - PUT /api/businesses/16","timestamp":"2025-06-12 00:10:39"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:10:39"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:10:39","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T22:10:39.408Z - PUT /api/businesses/16","timestamp":"2025-06-12 00:10:39"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:10:39"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:10:39","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T22:11:33.954Z - GET /api/businesses/user","timestamp":"2025-06-12 00:11:33"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:11:33"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:11:33","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T22:11:45.092Z - GET /api/businesses/user","timestamp":"2025-06-12 00:11:45"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:11:45"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:11:45","url":"/api/businesses/user"}
+{"level":"info","message":"2025-06-11T22:11:49.167Z - PUT /api/businesses/16","timestamp":"2025-06-12 00:11:49"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:11:49"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:11:49","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T22:11:49.177Z - PUT /api/businesses/16","timestamp":"2025-06-12 00:11:49"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:11:49"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:11:49","url":"/api/businesses/16"}
+{"level":"info","message":"Servidor ejecutándose en puerto: 3000","timestamp":"2025-06-12 00:15:14"}
+{"level":"info","message":"Documentación API: http://localhost:3000/api-docs","timestamp":"2025-06-12 00:15:14"}
+{"level":"info","message":"2025-06-11T22:15:17.642Z - PUT /api/businesses/16","timestamp":"2025-06-12 00:15:17"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:15:17"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:15:17","url":"/api/businesses/16"}
+{"level":"info","message":"2025-06-11T22:15:36.549Z - GET /api/businesses/user","timestamp":"2025-06-12 00:15:36"}
+{"level":"info","message":"Authentication check for:","timestamp":"2025-06-12 00:15:36"}
+{"email":"jose@gmail.com","id":33,"level":"info","message":"User authenticated successfully:","role":"negocio","timestamp":"2025-06-12 00:15:36","url":"/api/businesses/user"}

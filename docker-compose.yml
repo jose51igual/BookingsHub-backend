@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_reservas
+    restart: always
+    environment:
+      MYSQL_DATABASE: reservas
+      MYSQL_ROOT_PASSWORD: password
+      # MYSQL_USER: user # Opcional: si quieres un usuario específico además de root
+      # MYSQL_PASSWORD: user_password # Opcional: contraseña para el usuario específico
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma_reservas
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root # Usuario por defecto para login en PMA
+      PMA_PASSWORD: password # Contraseña por defecto para login en PMA
+      UPLOAD_LIMIT: 1G # Aumenta el límite de subida si necesitas importar archivos SQL grandes
+    ports:
+      - "8081:80"
+    depends_on:
+      db:
+        condition: service_healthy # Espera a que el healthcheck de la BD sea positivo
+
+volumes:
+  mysql_data:
