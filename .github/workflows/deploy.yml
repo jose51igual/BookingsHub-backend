@@ -1,0 +1,122 @@
+name: Deploy Backend to Server
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm ci
+      
+    - name: Run tests
+      working-directory: ./backend
+      run: npm test
+      env:
+        NODE_ENV: test
+        
+    - name: Create deployment package
+      working-directory: ./backend
+      run: |
+        mkdir -p ../deploy/backend
+        cp -r . ../deploy/backend/
+        rm -rf ../deploy/backend/node_modules
+        rm -rf ../deploy/backend/tests
+        rm -rf ../deploy/backend/.git*
+        rm -rf ../deploy/backend/logs/*
+        echo "VERSION=$(date +%Y%m%d_%H%M%S)" >> ../deploy/backend/.env.deploy
+        echo "COMMIT_HASH=${{ github.sha }}" >> ../deploy/backend/.env.deploy
+        
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || 22 }}
+        script: |
+          mkdir -p /var/www/bookings-hub/backend
+          mkdir -p /var/www/bookings-hub/backups
+          
+          if [ -d "/var/www/bookings-hub/backend/current" ]; then
+            sudo mv /var/www/bookings-hub/backend/current /var/www/bookings-hub/backups/backend_$(date +%Y%m%d_%H%M%S)
+          fi
+          
+          mkdir -p /var/www/bookings-hub/backend/current
+          
+    - name: Upload files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || 22}}
+        source: "deploy/backend/*"
+        target: "/var/www/bookings-hub/backend/current"
+        strip_components: 2
+        
+    - name: Install dependencies and restart services
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || 22 }}
+        script: |
+          cd /var/www/bookings-hub/backend/current
+          
+          npm ci --production
+          
+          echo "Creando archivo .env en el servidor..."
+          cat > .env << EOF
+          NODE_ENV=production
+          PORT=${{ secrets.PORT || 3000 }}
+          HOST=${{ secrets.HOST || '0.0.0.0' }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT || 3306 }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID || 'falta' }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET || 'falta' }}
+          LOG_LEVEL=${{ secrets.LOG_LEVEL || 'info' }}
+          DATABASE_URL="mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT || 3306 }}/${{ secrets.DB_NAME }}"
+          EOF
+          echo ".env creado."
+
+          echo "Ejecutando migraciones de Prisma..."
+          npx prisma migrate deploy
+          echo "Migraciones de Prisma completadas."
+          
+          if ! command -v pm2 &> /dev/null; then
+            echo "PM2 no encontrado, instalando..."
+            sudo npm install -g pm2
+          fi
+
+          echo "Reiniciando la aplicación con PM2..."
+          pm2 delete bookings-hub-backend || true
+          pm2 start ecosystem.config.js --env production
+          pm2 save
+          
+          echo "Backend deployment completed successfully!"
