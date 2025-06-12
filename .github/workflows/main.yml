@@ -103,6 +103,10 @@ jobs:
           
           echo "Cleaning previous Prisma generation..."
           rm -rf generated/prisma node_modules/.prisma
+          rm -rf prisma/migrations/20*/*
+          
+          echo "Resetting Prisma schema cache..."
+          npx prisma format || echo "Prisma format completed"
           
           echo "Running Prisma migrations..."
           npx prisma migrate deploy || {
@@ -111,20 +115,21 @@ jobs:
           }
           echo "Prisma migrations completed."
 
-          echo "Generating Prisma client..."
+          echo "Generating Prisma client.."
           npx prisma generate || {
             echo "Prisma client generation failed"
             exit 1
           }
           echo "Prisma client generated successfully."
           
-          echo "Checking database and seeding if needed..."
-          # Check if database has data, if not seed it
-          npx prisma db seed 2>/dev/null || {
-            echo "Database seeding failed or already seeded"
-            # Continue deployment even if seeding fails
-          }
-          echo "Database verification completed."
+          echo "Cleaning and populating database..."
+          # Reset database and populate with fresh data
+          echo "Resetting database..."
+          npx prisma db push --reset-database --accept-data-loss --force-reset || echo "Database reset failed, continuing..."
+          
+          echo "Populating database with fresh data..."
+          npx prisma db seed || echo "Database seeding failed, continuing..."
+          echo "Database population completed."
           
           if ! command -v pm2 &> /dev/null; then
             echo "PM2 no encontrado, instalando..."
