@@ -28,7 +28,7 @@ jobs:
       run: npm test
       env:
         NODE_ENV: test
-        
+
     - name: Create deployment package
       working-directory: .
       run: |
@@ -57,8 +57,7 @@ jobs:
           fi
           
           mkdir -p /var/www/bookings-hub/current
-          
-    - name: Upload files to server
+            - name: Upload files to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -67,7 +66,7 @@ jobs:
         port: ${{ secrets.SSH_PORT || 22}}
         source: "deploy/*"
         target: "/var/www/bookings-hub/current"
-        strip_components: 2
+        strip_components: 1
         
     - name: Install dependencies and restart services
       uses: appleboy/ssh-action@v1.0.3
