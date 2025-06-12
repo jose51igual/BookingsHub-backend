@@ -10,7 +10,7 @@ const { apiError, validationError } = require('./utils/apiResponse');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const credentials = require('./config/credentials');
+const credentialsUtil = require('./config/credentials');
 const { swaggerSpec, swaggerUi } = require('./swagger');
 
 // Importar rutas centralizadas
@@ -25,7 +25,7 @@ const app = express();
 
 // Configuración CORS
 const corsOptions = {
-  origin: credentials.server.corsOrigin,
+  origin: credentialsUtil.server.corsOrigin,
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -39,7 +39,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Middleware de logging de peticiones (solo desarrollo)
-if (credentials.server.environment === 'development') {
+if (credentialsUtil.server.environment === 'development') {
   app.use((req, res, next) => {
     logger.info(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
@@ -82,7 +82,7 @@ app.use((error, req, res, next) => {
   }
     // Error genérico
   const statusCode = error.status || error.statusCode || 500;
-  const message = credentials.server.environment === 'production' 
+  const message = credentialsUtil.server.environment === 'production' 
     ? (statusCode === 500 ? 'Error interno del servidor' : error.message)
     : error.message;
   
@@ -91,7 +91,7 @@ app.use((error, req, res, next) => {
 
 
 if (require.main === module) {
-  const PORT = credentials.server.port || 3000;
+  const PORT = credentialsUtil.server.port || 3000;
   
   app.listen(PORT, () => {
     logger.info(`Servidor ejecutándose en puerto: ${PORT}`);

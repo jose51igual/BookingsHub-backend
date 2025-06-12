@@ -35,7 +35,7 @@ module.exports = {
   server: {
     port: process.env.PORT || 3000,
     environment: process.env.NODE_ENV || 'development',
-    corsOrigin: process.env.CORS_ORIGIN || ['http://localhost:8100', 'http://localhost:8101', 'http://www.bookingshub.es', 'https://www.bookingshub.es']
+    corsOrigin: ['http://localhost:8100', 'http://localhost:8101', 'http://www.bookingshub.es', 'https://www.bookingshub.es', 'http://localhost', 'https://localhost', 'bookingshub.es'],
   },
 
   // APIs externas

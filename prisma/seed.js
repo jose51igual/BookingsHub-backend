@@ -59,10 +59,33 @@ async function generateUsers(count = 20) {
   const users = [];
   const defaultPassword = await hashPassword('password123');
   
-  for (let i = 0; i < count; i++) {
+  // Crear usuarios específicos para pruebas
+  const testUsers = [
+    {
+      name: 'Jose Cliente',
+      email: 'jose@gmail.com',
+      password: await hashPassword('123456'),
+      phone: 123456789,
+      role: 'cliente',
+      created_at: new Date()
+    },
+    {
+      name: 'Jose Negocio',
+      email: 'josenegocio@gmail.com',
+      password: await hashPassword('123456'),
+      phone: 987654321,
+      role: 'negocio',
+      created_at: new Date()
+    }
+  ];
+  
+  users.push(...testUsers);
+  
+  // Generar usuarios aleatorios (reducimos en 2 porque ya agregamos 2 específicos)
+  for (let i = 0; i < count - 2; i++) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
-    const role = i < count / 2 ? 'cliente' : 'negocio';
+    const role = i < (count - 2) / 2 ? 'cliente' : 'negocio';
     
     const user = {
       name: `${firstName} ${lastName}`,
