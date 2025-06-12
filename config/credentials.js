@@ -8,7 +8,7 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'password',
     name: process.env.DB_NAME || 'reservas'
   },
-
+ 
   // Secretos JWT
   jwt: {
     secret: process.env.JWT_SECRET || 'your-secret-key',
