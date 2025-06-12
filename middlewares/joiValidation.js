@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const config = require('@config/index');
+const { validationError } = require('@utils/apiResponse');
 
 /**
  * Middleware para validar requests usando Joi
@@ -9,40 +10,15 @@ const config = require('@config/index');
 const validateRequest = (schema, source = 'body') => {
   return (req, res, next) => {
     const dataToValidate = req[source];
-    
-    // 🔍 DEBUG: Log para verificar datos de entrada
-    console.log(`🔍 [DEBUG] Validando ${source}:`, JSON.stringify(dataToValidate, null, 2));
-    
+
     const { error, value } = schema.validate(dataToValidate, {
       abortEarly: false, // Retorna todos los errores, no solo el primero
       allowUnknown: false, // No permite campos adicionales
       stripUnknown: true // Remueve campos desconocidos
-    });
-
+    });    
     if (error) {
-      // 🔍 DEBUG: Log para verificar errores de validación
-      console.log('❌ [DEBUG] Errores de validación:', error.details);
-      
-      const errorMessages = error.details.map(detail => ({
-        field: detail.path.join('.'),
-        message: detail.message,
-        value: detail.context?.value
-      }));
-
-      console.log('❌ [DEBUG] Errores formateados:', errorMessages);
-
-      return res.status(400).json({
-        success: false,
-        message: 'Errores de validación en los datos enviados',
-        errors: errorMessages,
-        data: null
-      });
+      return validationError(res, error);
     }
-
-    // 🔍 DEBUG: Log para verificar datos validados
-    console.log(`✅ [DEBUG] Datos validados ${source}:`, JSON.stringify(value, null, 2));
-
-    // Reemplazar los datos originales con los validados y sanitizados
     req[source] = value;
     next();
   };

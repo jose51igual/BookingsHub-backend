@@ -67,7 +67,8 @@ jobs:
         port: ${{ secrets.SSH_PORT || 22}}
         source: "deploy/*"
         target: "/var/www/bookings-hub/current"
-        strip_components: 2
+        strip_components: 1
+
         
     - name: Install dependencies and restart services
       uses: appleboy/ssh-action@v1.0.3

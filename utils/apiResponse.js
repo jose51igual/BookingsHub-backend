@@ -20,21 +20,13 @@ const apiResponse = (res, statusCode, data) => {
  * @param {Object} res - Express response object
  * @param {number} statusCode - HTTP status code
  * @param {string} message - Error message
- * @param {Object} error - Error object (optional, only in development)
  */
-const apiError = (res, statusCode, message, error = null) => {
+const apiError = (res, statusCode, message) => {
   const response = {
     success: false,
     message,
     data: null
   };
-
-  // Incluir detalles del error solo en modo desarrollo
-  if (error && config.NODE_ENV === 'development') {
-    response.error = error.message;
-    response.stack = error.stack;
-  }
-
   return res.status(statusCode).json(response);
 };
 

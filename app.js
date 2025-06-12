@@ -1,9 +1,10 @@
 require('module-alias/register');
 const logger = require('@utils/logger');
+const { apiError, validationError } = require('./utils/apiResponse');
 
 /**
- * Main application file
- * Express.js application configuration and middleware setup
+ * Archivo principal de la aplicación
+ * Configuración de la aplicación Express.js y middleware
  */
 
 const express = require('express');
@@ -59,78 +60,33 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 // Rutas de la API
 app.use('/api', apiRoutes);
 
-// Endpoint raíz
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Welcome to Bookings Hub API',
-    version: '1.0.0',
-    status: 'Running',
-    environment: credentials.server.environment,
-    timestamp: new Date().toISOString(),
-    endpoints: {
-      api: '/api',
-      documentation: '/api-docs'
-    }
-  });
-});
-
 /**
  * Error Handling Middleware
  */
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `La ruta ${req.originalUrl} no existe`,
-    data: null,
-    timestamp: new Date().toISOString()
-  });
+  apiError(res, 404, `La ruta ${req.originalUrl} no existe`);
 });
 
 // Manejador global de errores
 app.use((error, req, res, next) => {
   logger.error('Server Error:', error);
-
   // Error específico de validación de Joi
   if (error.isJoi) {
-    return res.status(400).json({
-      success: false,
-      message: 'Errores de validación en los datos enviados',
-      errors: error.details.map(detail => ({
-        field: detail.path.join('.'),
-        message: detail.message,
-        value: detail.context?.value
-      })),
-      data: null
-    });
+    return validationError(res, error);
   }
-  
-  // Error de sintaxis JSON
+    // Error de sintaxis JSON
   if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
-    return res.status(400).json({
-      success: false,
-      message: 'JSON mal formateado en el cuerpo de la petición',
-      data: null
-    });
+    return apiError(res, 400, 'JSON mal formateado en el cuerpo de la petición');
   }
-  
-  // Error genérico
+    // Error genérico
   const statusCode = error.status || error.statusCode || 500;
   const message = credentials.server.environment === 'production' 
     ? (statusCode === 500 ? 'Error interno del servidor' : error.message)
     : error.message;
   
-  res.status(statusCode).json({
-    success: false,
-    message,
-    data: null,
-    timestamp: new Date().toISOString(),
-    ...(credentials.server.environment === 'development' && { 
-      stack: error.stack,
-      details: error.toString()
-    })
-  });
+  return apiError(res, statusCode, message, error);
 });
 
 

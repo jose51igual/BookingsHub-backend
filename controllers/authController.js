@@ -5,6 +5,7 @@ const { generateAccessToken } = require('@middlewares/auth');
 const config = require('@config/index');
 const bcrypt = require('bcryptjs');
 const logger = require('@utils/logger');
+const { apiResponse, apiError } = require('@utils/apiResponse');
 
 /**
  * User registration controller
@@ -15,25 +16,15 @@ const register = async (req, res) => {
     const { name, email, password, role = 'cliente', phone, businessData } = req.body;
     
     // Verificar si el email ya existe
-    const existingUser = await AuthModel.findByEmail(email);
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        error: {
-          message: 'Email already exists',
-          details: ['A user with this email already exists']
-        }
+    const existingUser = await AuthModel.findByEmail(email);    if (existingUser) {
+      return apiError(res, 400, 'Email already exists', {
+        details: ['A user with this email already exists']
       });
     }
-    
-    // Validar que la contraseña no sea undefined
+      // Validar que la contraseña no sea undefined
     if (!password) {
-      return res.status(400).json({
-        success: false,
-        error: {
-          message: 'Password is required',
-          details: ['Password field is missing or empty']
-        }
+      return apiError(res, 400, 'Password is required', {
+        details: ['Password field is missing or empty']
       });
     }
     
@@ -67,11 +58,10 @@ const register = async (req, res) => {
         });
       }
     }
-    
-    // Generar token de acceso
+      // Generar token de acceso
     const accessToken = generateAccessToken(user.id, user.email, user.role);
     
-    res.status(201).json({
+    return apiResponse(res, 201, {
       success: true,
       message: 'User registered successfully',
       data: {
@@ -92,12 +82,7 @@ const register = async (req, res) => {
       error: error.message,
       stack: error.stack
     });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Internal server error during registration'
-      }
-    });
+    return apiError(res, 500, 'Internal server error during registration');
   }
 };
 
@@ -108,28 +93,18 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    
-    // Buscar usuario por email
+      // Buscar usuario por email
     const user = await AuthModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({
-        success: false,
-        error: {
-          message: 'Invalid credentials',
-          details: ['Email or password is incorrect']
-        }
+      return apiError(res, 401, 'Invalid credentials', {
+        details: ['Email or password is incorrect']
       });
     }
-    
-    // Verificar contraseña
+      // Verificar contraseña
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({
-        success: false,
-        error: {
-          message: 'Invalid credentials',
-          details: ['Email or password is incorrect']
-        }
+      return apiError(res, 401, 'Invalid credentials', {
+        details: ['Email or password is incorrect']
       });
     }
     
@@ -142,8 +117,7 @@ const login = async (req, res) => {
       role: user.role,
       timestamp: new Date().toISOString()
     });
-    
-    res.status(200).json({
+      return apiResponse(res, 200, {
       success: true,
       message: 'Login successful',
       data: {
@@ -163,12 +137,7 @@ const login = async (req, res) => {
       stack: error.stack,
       timestamp: new Date().toISOString()
     });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Internal server error during login'
-      }
-    });
+    return apiError(res, 500, 'Internal server error during login');
   }
 };
 
@@ -185,14 +154,9 @@ const googleAuth = async (req, res) => {
     });
     
     // Verificar token de Google y obtener información del usuario
-    const googleUserInfo = await AuthModel.verifyGoogleToken(token);
-    if (!googleUserInfo) {
-      return res.status(400).json({
-        success: false,
-        error: {
-          message: 'Invalid Google token',
-          details: ['The provided Google token is invalid or expired']
-        }
+    const googleUserInfo = await AuthModel.verifyGoogleToken(token);    if (!googleUserInfo) {
+      return apiError(res, 400, 'Invalid Google token', {
+        details: ['The provided Google token is invalid or expired']
       });
     }
     
@@ -219,8 +183,7 @@ const googleAuth = async (req, res) => {
       email: user.email,
       timestamp: new Date().toISOString()
     });
-    
-    res.status(200).json({
+      return apiResponse(res, 200, {
       success: true,
       message: 'Google authentication successful',
       data: {
@@ -240,12 +203,7 @@ const googleAuth = async (req, res) => {
       stack: error.stack,
       timestamp: new Date().toISOString()
     });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Internal server error during Google authentication'
-      }
-    });
+    return apiError(res, 500, 'Internal server error during Google authentication');
   }
 };
 
@@ -256,20 +214,13 @@ const googleAuth = async (req, res) => {
 const refreshToken = async (req, res) => {
   try {
     const { refreshToken } = req.body;
-    
-    if (!refreshToken) {
-      return res.status(401).json({
-        success: false,
-        error: {
-          message: 'Refresh token not provided'
-        }
-      });
+      if (!refreshToken) {
+      return apiError(res, 401, 'Refresh token not provided');
     }
     
     // Verificar refresh token (implementación necesaria)
-    // Por ahora, solo retornamos un nuevo token de acceso
-    
-    res.status(200).json({
+    // Por ahora, solo retornamos un nuevo token de acceso    
+    return apiResponse(res, 200, {
       success: true,
       message: 'Token refreshed successfully',
       data: {
@@ -283,12 +234,7 @@ const refreshToken = async (req, res) => {
       stack: error.stack,
       timestamp: new Date().toISOString()
     });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Internal server error during token refresh'
-      }
-    });
+    return apiError(res, 500, 'Internal server error during token refresh');
   }
 };
 
@@ -302,9 +248,8 @@ const logout = async (req, res) => {
     logger.info('User logout initiated', {
       userId: req.user?.id,
       timestamp: new Date().toISOString()
-    });
-    
-    res.status(200).json({
+    });    
+    return apiResponse(res, 200, {
       success: true,
       message: 'Logout successful'
     });
@@ -316,12 +261,7 @@ const logout = async (req, res) => {
       userId: req.user?.id,
       timestamp: new Date().toISOString()
     });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Internal server error during logout'
-      }
-    });
+    return apiError(res, 500, 'Internal server error during logout');
   }
 };
 

@@ -1,5 +1,4 @@
 const EmployeeController = require('@controllers/employeeController');
-const EmployeeController = require('@controllers/employeeController');
 const EmployeeModel = require('@models/employeeModel');
 const { apiResponse, apiError } = require('@utils/apiResponse');
 

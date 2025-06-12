@@ -12,7 +12,7 @@ const getAllBusinesses = async (req, res) => {
   try {
     const businesses = await BusinessModel.getAllBusinesses();
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       count: businesses.length,
       data: businesses,
@@ -20,11 +20,7 @@ const getAllBusinesses = async (req, res) => {
     });
   } catch (error) {
     logger.error('Error en getAllBusinesses:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -38,7 +34,7 @@ const getFeaturedBusinesses = async (req, res) => {
     const limit = parseInt(req.query.limit) || config.DEFAULT_PAGINATION_LIMIT;
     const businesses = await BusinessModel.getFeaturedBusinesses(limit);
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       count: businesses.length,
       data: businesses,
@@ -46,11 +42,7 @@ const getFeaturedBusinesses = async (req, res) => {
     });
   } catch (error) {
     logger.error('Error en getFeaturedBusinesses:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -62,18 +54,13 @@ const getFeaturedBusinesses = async (req, res) => {
 const searchBusinesses = async (req, res) => {
   try {
     const { term } = req.query;
-    
-    if (!term || term.trim().length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Se requiere un término de búsqueda válido',
-        data: null
-      });
+      if (!term || term.trim().length === 0) {
+      return apiError(res, 400, 'Se requiere un término de búsqueda válido');
     }
     
     const businesses = await BusinessModel.searchBusinesses(term.trim());
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       count: businesses.length,
       data: businesses,
@@ -81,11 +68,7 @@ const searchBusinesses = async (req, res) => {
     });
   } catch (error) {
     logger.error('Error en searchBusinesses:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -97,18 +80,13 @@ const searchBusinesses = async (req, res) => {
 const getBusinessesByCategory = async (req, res) => {
   try {
     const { category } = req.params;
-    
-    if (!category || category.trim().length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Se requiere una categoría válida',
-        data: null
-      });
+      if (!category || category.trim().length === 0) {
+      return apiError(res, 400, 'Se requiere una categoría válida');
     }
     
     const businesses = await BusinessModel.getBusinessesByCategory(category.trim());
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       count: businesses.length,
       data: businesses,
@@ -116,11 +94,7 @@ const getBusinessesByCategory = async (req, res) => {
     });
   } catch (error) {
     logger.error('Error en getBusinessesByCategory:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -132,27 +106,18 @@ const getBusinessesByCategory = async (req, res) => {
 const getBusinessByUserId = async (req, res) => {
   try {
     const business = await BusinessModel.getBusinessByUserId(req.user.id);
-    
-    if (!business) {
-      return res.status(404).json({
-        success: false,
-        message: 'No se encontró un negocio asociado a este usuario',
-        data: null
-      });
+      if (!business) {
+      return apiError(res, 404, 'No se encontró un negocio asociado a este usuario');
     }
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       data: business,
       message: 'Negocio obtenido exitosamente'
     });
   } catch (error) {
     logger.error('Error en getBusinessByUserId:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -165,27 +130,18 @@ const getBusinessById = async (req, res) => {
   try {
     const businessId = parseInt(req.params.id);
     const business = await BusinessModel.getBusinessById(businessId);
-    
-    if (!business) {
-      return res.status(404).json({
-        success: false,
-        message: 'Negocio no encontrado',
-        data: null
-      });
+      if (!business) {
+      return apiError(res, 404, 'Negocio no encontrado');
     }
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       data: business,
       message: 'Negocio obtenido exitosamente'
     });
   } catch (error) {
     logger.error('Error en getBusinessById:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -195,14 +151,9 @@ const getBusinessById = async (req, res) => {
  * @access  Private (Business role only)
  */
 const createBusiness = async (req, res) => {
-  try {
-    // Verificar rol de usuario
+  try {    // Verificar rol de usuario
     if (req.user.role !== config.USER_ROLES.BUSINESS) {
-      return res.status(403).json({
-        success: false,
-        message: 'Solo usuarios con rol de negocio pueden crear un perfil de negocio',
-        data: null
-      });
+      return apiError(res, 403, 'Solo usuarios con rol de negocio pueden crear un perfil de negocio');
     }
     
     const { 
@@ -213,25 +164,15 @@ const createBusiness = async (req, res) => {
       category,
       image
     } = req.body;
-    
-    // Validar campos requeridos
+      // Validar campos requeridos
     if (!name || !description || !category) {
-      return res.status(400).json({
-        success: false,
-        message: 'Nombre, descripción y categoría son campos requeridos',
-        data: null
-      });
+      return apiError(res, 400, 'Nombre, descripción y categoría son campos requeridos');
     }
     
     // Verificar si el usuario ya tiene un negocio
     const hasBusiness = await BusinessModel.userHasBusiness(req.user.id);
-    
-    if (hasBusiness) {
-      return res.status(409).json({
-        success: false,
-        message: 'Este usuario ya tiene un negocio registrado',
-        data: null
-      });
+      if (hasBusiness) {
+      return apiError(res, 409, 'Este usuario ya tiene un negocio registrado');
     }
     
     // Crear nuevo negocio
@@ -244,21 +185,16 @@ const createBusiness = async (req, res) => {
         address: address?.trim(),
         category: category.trim(),
         image: image?.trim()
-      }
-    );
+      }    );
     
-    res.status(201).json({
+    return apiResponse(res, 201, {
       success: true,
       data: { businessId },
       message: 'Negocio creado exitosamente'
     });
   } catch (error) {
     logger.error('Error en createBusiness:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -271,14 +207,8 @@ const updateBusiness = async (req, res) => {
   try {
     const businessId = parseInt(req.params.id);
 
-    const isOwner = await BusinessModel.isBusinessOwner(businessId, req.user.id);
-
-    if (!isOwner) {
-      return res.status(403).json({
-        success: false,
-        message: 'No tienes autorización para actualizar este negocio',
-        data: null
-      });
+    const isOwner = await BusinessModel.isBusinessOwner(businessId, req.user.id);    if (!isOwner) {
+      return apiError(res, 403, 'No tienes autorización para actualizar este negocio');
     }
     
     const { 
@@ -288,14 +218,8 @@ const updateBusiness = async (req, res) => {
       address,
       category,
       image
-    } = req.body;
-
-    if (!name || !description) {
-      return res.status(400).json({
-        success: false,
-        message: 'Nombre y descripción son campos requeridos',
-        data: null
-      });
+    } = req.body;    if (!name || !description) {
+      return apiError(res, 400, 'Nombre y descripción son campos requeridos');
     }
     
     await BusinessModel.updateBusiness(
@@ -307,21 +231,16 @@ const updateBusiness = async (req, res) => {
         address: address?.trim(),
         category: category?.trim(),
         image: image?.trim()
-      }
-    );
+      }    );
     
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       data: null,
       message: 'Negocio actualizado exitosamente'
     });
   } catch (error) {
     logger.error('Error en updateBusiness:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -350,17 +269,12 @@ const getRecentBookings = async (req, res) => {
       userId,
       isOwner
     });
-    
-    if (!isOwner) {
+      if (!isOwner) {
       logger.warn('🚫 Unauthorized access to business bookings', {
         businessId,
         userId
       });
-      return res.status(403).json({
-        success: false,
-        message: 'No tienes autorización para ver las reservas de este negocio',
-        data: null
-      });
+      return apiError(res, 403, 'No tienes autorización para ver las reservas de este negocio');
     }
 
     logger.info('📚 Calling BusinessModel.getRecentBookings', {
@@ -379,8 +293,7 @@ const getRecentBookings = async (req, res) => {
         date: b.booking_date
       }))
     });
-    
-    res.status(200).json({
+      return apiResponse(res, 200, {
       success: true,
       count: recentBookings.length,
       data: recentBookings,
@@ -388,11 +301,7 @@ const getRecentBookings = async (req, res) => {
     });
   } catch (error) {
     logger.error('Error en getRecentBookings:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
@@ -406,30 +315,21 @@ const getWeeklyStats = async (req, res) => {
     const businessId = parseInt(req.params.id);
     
     // Verificar que el usuario sea propietario del negocio
-    const isOwner = await BusinessModel.isBusinessOwner(businessId, req.user.id);
-    if (!isOwner) {
-      return res.status(403).json({
-        success: false,
-        message: 'No tienes autorización para ver las estadísticas de este negocio',
-        data: null
-      });
+    const isOwner = await BusinessModel.isBusinessOwner(businessId, req.user.id);    if (!isOwner) {
+      return apiError(res, 403, 'No tienes autorización para ver las estadísticas de este negocio');
     }
 
     // TODO: Implementar método en BusinessModel para obtener estadísticas semanales
     const weeklyStats = await BusinessModel.getWeeklyStats(businessId);
 
-    res.status(200).json({
+    return apiResponse(res, 200, {
       success: true,
       data: weeklyStats,
       message: 'Estadísticas semanales obtenidas exitosamente'
     });
   } catch (error) {
     logger.error('Error en getWeeklyStats:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: config.NODE_ENV === 'development' ? error.message : undefined
-    });
+    return apiError(res, 500, 'Error interno del servidor', error);
   }
 };
 
