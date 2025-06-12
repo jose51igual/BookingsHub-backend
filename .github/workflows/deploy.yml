@@ -49,10 +49,15 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
+          mkdir -p /var/www/bookings-hub
+          mkdir -p /var/www/bookings-hub/backups
+          
           if [ -d "/var/www/bookings-hub/current" ]; then
             sudo mv /var/www/bookings-hub/current /var/www/bookings-hub/backups_$(date +%Y%m%d_%H%M%S)
           fi
-
+          
+          mkdir -p /var/www/bookings-hub/current
+          
     - name: Upload files to server
       uses: appleboy/scp-action@v0.1.7
       with:
