@@ -87,16 +87,16 @@ model reviews {
 }
 
 model services {
-  id               Int            @id @default(autoincrement())
+  id               Int        @id @default(autoincrement())
   business_id      Int
-  name             String         @db.VarChar(255)
-  description      String?        @db.Text
+  name             String     @db.VarChar(255)
+  description      String?    @db.Text
   duration_minutes Int
-  category         String?        @db.VarChar(65)
-  price            Decimal        @db.Decimal(10, 2)
-  created_at       DateTime?      @default(now()) @db.Timestamp(0)
+  category         String?    @db.VarChar(65)
+  price            Decimal    @db.Decimal(10, 2)
+  created_at       DateTime?  @default(now()) @db.Timestamp(0)
   bookings         bookings[]
-  businesses       businesses     @relation(fields: [business_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "services_ibfk_1")
+  businesses       businesses @relation(fields: [business_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "services_ibfk_1")
 
   @@index([business_id], map: "business_id")
 }
@@ -113,16 +113,6 @@ model users {
   bookings   bookings[]
   businesses businesses[]
   reviews    reviews[]
-}
-
-enum availability_day_of_week {
-  Monday
-  Tuesday
-  Wednesday
-  Thursday
-  Friday
-  Saturday
-  Sunday
 }
 
 enum users_role {

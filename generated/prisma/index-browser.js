@@ -120,16 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.AvailabilityScalarFieldEnum = {
-  id: 'id',
-  service_id: 'service_id',
-  day_of_week: 'day_of_week',
-  start_time: 'start_time',
-  end_time: 'end_time',
-  max_bookings: 'max_bookings',
-  created_at: 'created_at'
-};
-
 exports.Prisma.BookingsScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -249,16 +239,6 @@ exports.Prisma.usersOrderByRelevanceFieldEnum = {
   password: 'password',
   google_id: 'google_id'
 };
-exports.availability_day_of_week = exports.$Enums.availability_day_of_week = {
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
-  Sunday: 'Sunday'
-};
-
 exports.bookings_status = exports.$Enums.bookings_status = {
   pendiente: 'pendiente',
   confirmada: 'confirmada',
@@ -275,7 +255,6 @@ exports.users_role = exports.$Enums.users_role = {
 };
 
 exports.Prisma.ModelName = {
-  availability: 'availability',
   bookings: 'bookings',
   businesses: 'businesses',
   employees: 'employees',

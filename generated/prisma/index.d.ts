@@ -14,11 +14,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model availability
- * 
- */
-export type availability = $Result.DefaultSelection<Prisma.$availabilityPayload>
-/**
  * Model bookings
  * 
  */
@@ -53,20 +48,7 @@ export type users = $Result.DefaultSelection<Prisma.$usersPayload>
  * Enums
  */
 export namespace $Enums {
-  export const availability_day_of_week: {
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
-  Sunday: 'Sunday'
-};
-
-export type availability_day_of_week = (typeof availability_day_of_week)[keyof typeof availability_day_of_week]
-
-
-export const users_role: {
+  export const users_role: {
   cliente: 'cliente',
   negocio: 'negocio',
   client: 'client',
@@ -88,10 +70,6 @@ export type bookings_status = (typeof bookings_status)[keyof typeof bookings_sta
 
 }
 
-export type availability_day_of_week = $Enums.availability_day_of_week
-
-export const availability_day_of_week: typeof $Enums.availability_day_of_week
-
 export type users_role = $Enums.users_role
 
 export const users_role: typeof $Enums.users_role
@@ -107,8 +85,8 @@ export const bookings_status: typeof $Enums.bookings_status
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Availabilities
- * const availabilities = await prisma.availability.findMany()
+ * // Fetch zero or more Bookings
+ * const bookings = await prisma.bookings.findMany()
  * ```
  *
  *
@@ -128,8 +106,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Availabilities
-   * const availabilities = await prisma.availability.findMany()
+   * // Fetch zero or more Bookings
+   * const bookings = await prisma.bookings.findMany()
    * ```
    *
    *
@@ -226,16 +204,6 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.availability`: Exposes CRUD operations for the **availability** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Availabilities
-    * const availabilities = await prisma.availability.findMany()
-    * ```
-    */
-  get availability(): Prisma.availabilityDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.bookings`: Exposes CRUD operations for the **bookings** model.
     * Example usage:
     * ```ts
@@ -734,7 +702,6 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    availability: 'availability',
     bookings: 'bookings',
     businesses: 'businesses',
     employees: 'employees',
@@ -759,76 +726,10 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "availability" | "bookings" | "businesses" | "employees" | "reviews" | "services" | "users"
+      modelProps: "bookings" | "businesses" | "employees" | "reviews" | "services" | "users"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      availability: {
-        payload: Prisma.$availabilityPayload<ExtArgs>
-        fields: Prisma.availabilityFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.availabilityFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.availabilityFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          findFirst: {
-            args: Prisma.availabilityFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.availabilityFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          findMany: {
-            args: Prisma.availabilityFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>[]
-          }
-          create: {
-            args: Prisma.availabilityCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          createMany: {
-            args: Prisma.availabilityCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.availabilityDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          update: {
-            args: Prisma.availabilityUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          deleteMany: {
-            args: Prisma.availabilityDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.availabilityUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.availabilityUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$availabilityPayload>
-          }
-          aggregate: {
-            args: Prisma.AvailabilityAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAvailability>
-          }
-          groupBy: {
-            args: Prisma.availabilityGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AvailabilityGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.availabilityCountArgs<ExtArgs>
-            result: $Utils.Optional<AvailabilityCountAggregateOutputType> | number
-          }
-        }
-      }
       bookings: {
         payload: Prisma.$bookingsPayload<ExtArgs>
         fields: Prisma.bookingsFieldRefs
@@ -1309,7 +1210,6 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    availability?: availabilityOmit
     bookings?: bookingsOmit
     businesses?: businessesOmit
     employees?: employeesOmit
@@ -1499,12 +1399,10 @@ export namespace Prisma {
    */
 
   export type ServicesCountOutputType = {
-    availability: number
     bookings: number
   }
 
   export type ServicesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    availability?: boolean | ServicesCountOutputTypeCountAvailabilityArgs
     bookings?: boolean | ServicesCountOutputTypeCountBookingsArgs
   }
 
@@ -1517,13 +1415,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the ServicesCountOutputType
      */
     select?: ServicesCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ServicesCountOutputType without action
-   */
-  export type ServicesCountOutputTypeCountAvailabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: availabilityWhereInput
   }
 
   /**
@@ -1586,999 +1477,6 @@ export namespace Prisma {
   /**
    * Models
    */
-
-  /**
-   * Model availability
-   */
-
-  export type AggregateAvailability = {
-    _count: AvailabilityCountAggregateOutputType | null
-    _avg: AvailabilityAvgAggregateOutputType | null
-    _sum: AvailabilitySumAggregateOutputType | null
-    _min: AvailabilityMinAggregateOutputType | null
-    _max: AvailabilityMaxAggregateOutputType | null
-  }
-
-  export type AvailabilityAvgAggregateOutputType = {
-    id: number | null
-    service_id: number | null
-    max_bookings: number | null
-  }
-
-  export type AvailabilitySumAggregateOutputType = {
-    id: number | null
-    service_id: number | null
-    max_bookings: number | null
-  }
-
-  export type AvailabilityMinAggregateOutputType = {
-    id: number | null
-    service_id: number | null
-    day_of_week: $Enums.availability_day_of_week | null
-    start_time: Date | null
-    end_time: Date | null
-    max_bookings: number | null
-    created_at: Date | null
-  }
-
-  export type AvailabilityMaxAggregateOutputType = {
-    id: number | null
-    service_id: number | null
-    day_of_week: $Enums.availability_day_of_week | null
-    start_time: Date | null
-    end_time: Date | null
-    max_bookings: number | null
-    created_at: Date | null
-  }
-
-  export type AvailabilityCountAggregateOutputType = {
-    id: number
-    service_id: number
-    day_of_week: number
-    start_time: number
-    end_time: number
-    max_bookings: number
-    created_at: number
-    _all: number
-  }
-
-
-  export type AvailabilityAvgAggregateInputType = {
-    id?: true
-    service_id?: true
-    max_bookings?: true
-  }
-
-  export type AvailabilitySumAggregateInputType = {
-    id?: true
-    service_id?: true
-    max_bookings?: true
-  }
-
-  export type AvailabilityMinAggregateInputType = {
-    id?: true
-    service_id?: true
-    day_of_week?: true
-    start_time?: true
-    end_time?: true
-    max_bookings?: true
-    created_at?: true
-  }
-
-  export type AvailabilityMaxAggregateInputType = {
-    id?: true
-    service_id?: true
-    day_of_week?: true
-    start_time?: true
-    end_time?: true
-    max_bookings?: true
-    created_at?: true
-  }
-
-  export type AvailabilityCountAggregateInputType = {
-    id?: true
-    service_id?: true
-    day_of_week?: true
-    start_time?: true
-    end_time?: true
-    max_bookings?: true
-    created_at?: true
-    _all?: true
-  }
-
-  export type AvailabilityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which availability to aggregate.
-     */
-    where?: availabilityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of availabilities to fetch.
-     */
-    orderBy?: availabilityOrderByWithRelationInput | availabilityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: availabilityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` availabilities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` availabilities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned availabilities
-    **/
-    _count?: true | AvailabilityCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AvailabilityAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AvailabilitySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AvailabilityMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AvailabilityMaxAggregateInputType
-  }
-
-  export type GetAvailabilityAggregateType<T extends AvailabilityAggregateArgs> = {
-        [P in keyof T & keyof AggregateAvailability]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAvailability[P]>
-      : GetScalarType<T[P], AggregateAvailability[P]>
-  }
-
-
-
-
-  export type availabilityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: availabilityWhereInput
-    orderBy?: availabilityOrderByWithAggregationInput | availabilityOrderByWithAggregationInput[]
-    by: AvailabilityScalarFieldEnum[] | AvailabilityScalarFieldEnum
-    having?: availabilityScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AvailabilityCountAggregateInputType | true
-    _avg?: AvailabilityAvgAggregateInputType
-    _sum?: AvailabilitySumAggregateInputType
-    _min?: AvailabilityMinAggregateInputType
-    _max?: AvailabilityMaxAggregateInputType
-  }
-
-  export type AvailabilityGroupByOutputType = {
-    id: number
-    service_id: number
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date
-    end_time: Date
-    max_bookings: number
-    created_at: Date | null
-    _count: AvailabilityCountAggregateOutputType | null
-    _avg: AvailabilityAvgAggregateOutputType | null
-    _sum: AvailabilitySumAggregateOutputType | null
-    _min: AvailabilityMinAggregateOutputType | null
-    _max: AvailabilityMaxAggregateOutputType | null
-  }
-
-  type GetAvailabilityGroupByPayload<T extends availabilityGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AvailabilityGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AvailabilityGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AvailabilityGroupByOutputType[P]>
-            : GetScalarType<T[P], AvailabilityGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type availabilitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    service_id?: boolean
-    day_of_week?: boolean
-    start_time?: boolean
-    end_time?: boolean
-    max_bookings?: boolean
-    created_at?: boolean
-    services?: boolean | servicesDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["availability"]>
-
-
-
-  export type availabilitySelectScalar = {
-    id?: boolean
-    service_id?: boolean
-    day_of_week?: boolean
-    start_time?: boolean
-    end_time?: boolean
-    max_bookings?: boolean
-    created_at?: boolean
-  }
-
-  export type availabilityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "service_id" | "day_of_week" | "start_time" | "end_time" | "max_bookings" | "created_at", ExtArgs["result"]["availability"]>
-  export type availabilityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    services?: boolean | servicesDefaultArgs<ExtArgs>
-  }
-
-  export type $availabilityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "availability"
-    objects: {
-      services: Prisma.$servicesPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      service_id: number
-      day_of_week: $Enums.availability_day_of_week
-      start_time: Date
-      end_time: Date
-      max_bookings: number
-      created_at: Date | null
-    }, ExtArgs["result"]["availability"]>
-    composites: {}
-  }
-
-  type availabilityGetPayload<S extends boolean | null | undefined | availabilityDefaultArgs> = $Result.GetResult<Prisma.$availabilityPayload, S>
-
-  type availabilityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<availabilityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AvailabilityCountAggregateInputType | true
-    }
-
-  export interface availabilityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['availability'], meta: { name: 'availability' } }
-    /**
-     * Find zero or one Availability that matches the filter.
-     * @param {availabilityFindUniqueArgs} args - Arguments to find a Availability
-     * @example
-     * // Get one Availability
-     * const availability = await prisma.availability.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends availabilityFindUniqueArgs>(args: SelectSubset<T, availabilityFindUniqueArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Availability that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {availabilityFindUniqueOrThrowArgs} args - Arguments to find a Availability
-     * @example
-     * // Get one Availability
-     * const availability = await prisma.availability.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends availabilityFindUniqueOrThrowArgs>(args: SelectSubset<T, availabilityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Availability that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityFindFirstArgs} args - Arguments to find a Availability
-     * @example
-     * // Get one Availability
-     * const availability = await prisma.availability.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends availabilityFindFirstArgs>(args?: SelectSubset<T, availabilityFindFirstArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Availability that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityFindFirstOrThrowArgs} args - Arguments to find a Availability
-     * @example
-     * // Get one Availability
-     * const availability = await prisma.availability.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends availabilityFindFirstOrThrowArgs>(args?: SelectSubset<T, availabilityFindFirstOrThrowArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Availabilities that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Availabilities
-     * const availabilities = await prisma.availability.findMany()
-     * 
-     * // Get first 10 Availabilities
-     * const availabilities = await prisma.availability.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const availabilityWithIdOnly = await prisma.availability.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends availabilityFindManyArgs>(args?: SelectSubset<T, availabilityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Availability.
-     * @param {availabilityCreateArgs} args - Arguments to create a Availability.
-     * @example
-     * // Create one Availability
-     * const Availability = await prisma.availability.create({
-     *   data: {
-     *     // ... data to create a Availability
-     *   }
-     * })
-     * 
-     */
-    create<T extends availabilityCreateArgs>(args: SelectSubset<T, availabilityCreateArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Availabilities.
-     * @param {availabilityCreateManyArgs} args - Arguments to create many Availabilities.
-     * @example
-     * // Create many Availabilities
-     * const availability = await prisma.availability.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends availabilityCreateManyArgs>(args?: SelectSubset<T, availabilityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Availability.
-     * @param {availabilityDeleteArgs} args - Arguments to delete one Availability.
-     * @example
-     * // Delete one Availability
-     * const Availability = await prisma.availability.delete({
-     *   where: {
-     *     // ... filter to delete one Availability
-     *   }
-     * })
-     * 
-     */
-    delete<T extends availabilityDeleteArgs>(args: SelectSubset<T, availabilityDeleteArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Availability.
-     * @param {availabilityUpdateArgs} args - Arguments to update one Availability.
-     * @example
-     * // Update one Availability
-     * const availability = await prisma.availability.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends availabilityUpdateArgs>(args: SelectSubset<T, availabilityUpdateArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Availabilities.
-     * @param {availabilityDeleteManyArgs} args - Arguments to filter Availabilities to delete.
-     * @example
-     * // Delete a few Availabilities
-     * const { count } = await prisma.availability.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends availabilityDeleteManyArgs>(args?: SelectSubset<T, availabilityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Availabilities.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Availabilities
-     * const availability = await prisma.availability.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends availabilityUpdateManyArgs>(args: SelectSubset<T, availabilityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Availability.
-     * @param {availabilityUpsertArgs} args - Arguments to update or create a Availability.
-     * @example
-     * // Update or create a Availability
-     * const availability = await prisma.availability.upsert({
-     *   create: {
-     *     // ... data to create a Availability
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Availability we want to update
-     *   }
-     * })
-     */
-    upsert<T extends availabilityUpsertArgs>(args: SelectSubset<T, availabilityUpsertArgs<ExtArgs>>): Prisma__availabilityClient<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Availabilities.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityCountArgs} args - Arguments to filter Availabilities to count.
-     * @example
-     * // Count the number of Availabilities
-     * const count = await prisma.availability.count({
-     *   where: {
-     *     // ... the filter for the Availabilities we want to count
-     *   }
-     * })
-    **/
-    count<T extends availabilityCountArgs>(
-      args?: Subset<T, availabilityCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AvailabilityCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Availability.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AvailabilityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AvailabilityAggregateArgs>(args: Subset<T, AvailabilityAggregateArgs>): Prisma.PrismaPromise<GetAvailabilityAggregateType<T>>
-
-    /**
-     * Group by Availability.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {availabilityGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends availabilityGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: availabilityGroupByArgs['orderBy'] }
-        : { orderBy?: availabilityGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, availabilityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAvailabilityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the availability model
-   */
-  readonly fields: availabilityFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for availability.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__availabilityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    services<T extends servicesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, servicesDefaultArgs<ExtArgs>>): Prisma__servicesClient<$Result.GetResult<Prisma.$servicesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the availability model
-   */
-  interface availabilityFieldRefs {
-    readonly id: FieldRef<"availability", 'Int'>
-    readonly service_id: FieldRef<"availability", 'Int'>
-    readonly day_of_week: FieldRef<"availability", 'availability_day_of_week'>
-    readonly start_time: FieldRef<"availability", 'DateTime'>
-    readonly end_time: FieldRef<"availability", 'DateTime'>
-    readonly max_bookings: FieldRef<"availability", 'Int'>
-    readonly created_at: FieldRef<"availability", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * availability findUnique
-   */
-  export type availabilityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter, which availability to fetch.
-     */
-    where: availabilityWhereUniqueInput
-  }
-
-  /**
-   * availability findUniqueOrThrow
-   */
-  export type availabilityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter, which availability to fetch.
-     */
-    where: availabilityWhereUniqueInput
-  }
-
-  /**
-   * availability findFirst
-   */
-  export type availabilityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter, which availability to fetch.
-     */
-    where?: availabilityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of availabilities to fetch.
-     */
-    orderBy?: availabilityOrderByWithRelationInput | availabilityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for availabilities.
-     */
-    cursor?: availabilityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` availabilities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` availabilities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of availabilities.
-     */
-    distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
-  }
-
-  /**
-   * availability findFirstOrThrow
-   */
-  export type availabilityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter, which availability to fetch.
-     */
-    where?: availabilityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of availabilities to fetch.
-     */
-    orderBy?: availabilityOrderByWithRelationInput | availabilityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for availabilities.
-     */
-    cursor?: availabilityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` availabilities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` availabilities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of availabilities.
-     */
-    distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
-  }
-
-  /**
-   * availability findMany
-   */
-  export type availabilityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter, which availabilities to fetch.
-     */
-    where?: availabilityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of availabilities to fetch.
-     */
-    orderBy?: availabilityOrderByWithRelationInput | availabilityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing availabilities.
-     */
-    cursor?: availabilityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` availabilities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` availabilities.
-     */
-    skip?: number
-    distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
-  }
-
-  /**
-   * availability create
-   */
-  export type availabilityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * The data needed to create a availability.
-     */
-    data: XOR<availabilityCreateInput, availabilityUncheckedCreateInput>
-  }
-
-  /**
-   * availability createMany
-   */
-  export type availabilityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many availabilities.
-     */
-    data: availabilityCreateManyInput | availabilityCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * availability update
-   */
-  export type availabilityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * The data needed to update a availability.
-     */
-    data: XOR<availabilityUpdateInput, availabilityUncheckedUpdateInput>
-    /**
-     * Choose, which availability to update.
-     */
-    where: availabilityWhereUniqueInput
-  }
-
-  /**
-   * availability updateMany
-   */
-  export type availabilityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update availabilities.
-     */
-    data: XOR<availabilityUpdateManyMutationInput, availabilityUncheckedUpdateManyInput>
-    /**
-     * Filter which availabilities to update
-     */
-    where?: availabilityWhereInput
-    /**
-     * Limit how many availabilities to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * availability upsert
-   */
-  export type availabilityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * The filter to search for the availability to update in case it exists.
-     */
-    where: availabilityWhereUniqueInput
-    /**
-     * In case the availability found by the `where` argument doesn't exist, create a new availability with this data.
-     */
-    create: XOR<availabilityCreateInput, availabilityUncheckedCreateInput>
-    /**
-     * In case the availability was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<availabilityUpdateInput, availabilityUncheckedUpdateInput>
-  }
-
-  /**
-   * availability delete
-   */
-  export type availabilityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    /**
-     * Filter which availability to delete.
-     */
-    where: availabilityWhereUniqueInput
-  }
-
-  /**
-   * availability deleteMany
-   */
-  export type availabilityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which availabilities to delete
-     */
-    where?: availabilityWhereInput
-    /**
-     * Limit how many availabilities to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * availability without action
-   */
-  export type availabilityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-  }
-
 
   /**
    * Model bookings
@@ -7068,7 +5966,6 @@ export namespace Prisma {
     category?: boolean
     price?: boolean
     created_at?: boolean
-    availability?: boolean | services$availabilityArgs<ExtArgs>
     bookings?: boolean | services$bookingsArgs<ExtArgs>
     businesses?: boolean | businessesDefaultArgs<ExtArgs>
     _count?: boolean | ServicesCountOutputTypeDefaultArgs<ExtArgs>
@@ -7089,7 +5986,6 @@ export namespace Prisma {
 
   export type servicesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "business_id" | "name" | "description" | "duration_minutes" | "category" | "price" | "created_at", ExtArgs["result"]["services"]>
   export type servicesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    availability?: boolean | services$availabilityArgs<ExtArgs>
     bookings?: boolean | services$bookingsArgs<ExtArgs>
     businesses?: boolean | businessesDefaultArgs<ExtArgs>
     _count?: boolean | ServicesCountOutputTypeDefaultArgs<ExtArgs>
@@ -7098,7 +5994,6 @@ export namespace Prisma {
   export type $servicesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "services"
     objects: {
-      availability: Prisma.$availabilityPayload<ExtArgs>[]
       bookings: Prisma.$bookingsPayload<ExtArgs>[]
       businesses: Prisma.$businessesPayload<ExtArgs>
     }
@@ -7451,7 +6346,6 @@ export namespace Prisma {
    */
   export interface Prisma__servicesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    availability<T extends services$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, services$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$availabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookings<T extends services$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, services$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$bookingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     businesses<T extends businessesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, businessesDefaultArgs<ExtArgs>>): Prisma__businessesClient<$Result.GetResult<Prisma.$businessesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -7831,30 +6725,6 @@ export namespace Prisma {
      * Limit how many services to delete.
      */
     limit?: number
-  }
-
-  /**
-   * services.availability
-   */
-  export type services$availabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the availability
-     */
-    select?: availabilitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the availability
-     */
-    omit?: availabilityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: availabilityInclude<ExtArgs> | null
-    where?: availabilityWhereInput
-    orderBy?: availabilityOrderByWithRelationInput | availabilityOrderByWithRelationInput[]
-    cursor?: availabilityWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
   }
 
   /**
@@ -8996,19 +7866,6 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const AvailabilityScalarFieldEnum: {
-    id: 'id',
-    service_id: 'service_id',
-    day_of_week: 'day_of_week',
-    start_time: 'start_time',
-    end_time: 'end_time',
-    max_bookings: 'max_bookings',
-    created_at: 'created_at'
-  };
-
-  export type AvailabilityScalarFieldEnum = (typeof AvailabilityScalarFieldEnum)[keyof typeof AvailabilityScalarFieldEnum]
-
-
   export const BookingsScalarFieldEnum: {
     id: 'id',
     user_id: 'user_id',
@@ -9184,13 +8041,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'availability_day_of_week'
-   */
-  export type Enumavailability_day_of_weekFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'availability_day_of_week'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -9241,73 +8091,6 @@ export namespace Prisma {
    * Deep Input Types
    */
 
-
-  export type availabilityWhereInput = {
-    AND?: availabilityWhereInput | availabilityWhereInput[]
-    OR?: availabilityWhereInput[]
-    NOT?: availabilityWhereInput | availabilityWhereInput[]
-    id?: IntFilter<"availability"> | number
-    service_id?: IntFilter<"availability"> | number
-    day_of_week?: Enumavailability_day_of_weekFilter<"availability"> | $Enums.availability_day_of_week
-    start_time?: DateTimeFilter<"availability"> | Date | string
-    end_time?: DateTimeFilter<"availability"> | Date | string
-    max_bookings?: IntFilter<"availability"> | number
-    created_at?: DateTimeNullableFilter<"availability"> | Date | string | null
-    services?: XOR<ServicesScalarRelationFilter, servicesWhereInput>
-  }
-
-  export type availabilityOrderByWithRelationInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    day_of_week?: SortOrder
-    start_time?: SortOrder
-    end_time?: SortOrder
-    max_bookings?: SortOrder
-    created_at?: SortOrderInput | SortOrder
-    services?: servicesOrderByWithRelationInput
-  }
-
-  export type availabilityWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: availabilityWhereInput | availabilityWhereInput[]
-    OR?: availabilityWhereInput[]
-    NOT?: availabilityWhereInput | availabilityWhereInput[]
-    service_id?: IntFilter<"availability"> | number
-    day_of_week?: Enumavailability_day_of_weekFilter<"availability"> | $Enums.availability_day_of_week
-    start_time?: DateTimeFilter<"availability"> | Date | string
-    end_time?: DateTimeFilter<"availability"> | Date | string
-    max_bookings?: IntFilter<"availability"> | number
-    created_at?: DateTimeNullableFilter<"availability"> | Date | string | null
-    services?: XOR<ServicesScalarRelationFilter, servicesWhereInput>
-  }, "id">
-
-  export type availabilityOrderByWithAggregationInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    day_of_week?: SortOrder
-    start_time?: SortOrder
-    end_time?: SortOrder
-    max_bookings?: SortOrder
-    created_at?: SortOrderInput | SortOrder
-    _count?: availabilityCountOrderByAggregateInput
-    _avg?: availabilityAvgOrderByAggregateInput
-    _max?: availabilityMaxOrderByAggregateInput
-    _min?: availabilityMinOrderByAggregateInput
-    _sum?: availabilitySumOrderByAggregateInput
-  }
-
-  export type availabilityScalarWhereWithAggregatesInput = {
-    AND?: availabilityScalarWhereWithAggregatesInput | availabilityScalarWhereWithAggregatesInput[]
-    OR?: availabilityScalarWhereWithAggregatesInput[]
-    NOT?: availabilityScalarWhereWithAggregatesInput | availabilityScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"availability"> | number
-    service_id?: IntWithAggregatesFilter<"availability"> | number
-    day_of_week?: Enumavailability_day_of_weekWithAggregatesFilter<"availability"> | $Enums.availability_day_of_week
-    start_time?: DateTimeWithAggregatesFilter<"availability"> | Date | string
-    end_time?: DateTimeWithAggregatesFilter<"availability"> | Date | string
-    max_bookings?: IntWithAggregatesFilter<"availability"> | number
-    created_at?: DateTimeNullableWithAggregatesFilter<"availability"> | Date | string | null
-  }
 
   export type bookingsWhereInput = {
     AND?: bookingsWhereInput | bookingsWhereInput[]
@@ -9665,7 +8448,6 @@ export namespace Prisma {
     category?: StringNullableFilter<"services"> | string | null
     price?: DecimalFilter<"services"> | Decimal | DecimalJsLike | number | string
     created_at?: DateTimeNullableFilter<"services"> | Date | string | null
-    availability?: AvailabilityListRelationFilter
     bookings?: BookingsListRelationFilter
     businesses?: XOR<BusinessesScalarRelationFilter, businessesWhereInput>
   }
@@ -9679,7 +8461,6 @@ export namespace Prisma {
     category?: SortOrderInput | SortOrder
     price?: SortOrder
     created_at?: SortOrderInput | SortOrder
-    availability?: availabilityOrderByRelationAggregateInput
     bookings?: bookingsOrderByRelationAggregateInput
     businesses?: businessesOrderByWithRelationInput
     _relevance?: servicesOrderByRelevanceInput
@@ -9697,7 +8478,6 @@ export namespace Prisma {
     category?: StringNullableFilter<"services"> | string | null
     price?: DecimalFilter<"services"> | Decimal | DecimalJsLike | number | string
     created_at?: DateTimeNullableFilter<"services"> | Date | string | null
-    availability?: AvailabilityListRelationFilter
     bookings?: BookingsListRelationFilter
     businesses?: XOR<BusinessesScalarRelationFilter, businessesWhereInput>
   }, "id">
@@ -9809,72 +8589,6 @@ export namespace Prisma {
     role?: Enumusers_roleWithAggregatesFilter<"users"> | $Enums.users_role
     created_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     google_id?: StringNullableWithAggregatesFilter<"users"> | string | null
-  }
-
-  export type availabilityCreateInput = {
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-    services: servicesCreateNestedOneWithoutAvailabilityInput
-  }
-
-  export type availabilityUncheckedCreateInput = {
-    id?: number
-    service_id: number
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-  }
-
-  export type availabilityUpdateInput = {
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    services?: servicesUpdateOneRequiredWithoutAvailabilityNestedInput
-  }
-
-  export type availabilityUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    service_id?: IntFieldUpdateOperationsInput | number
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type availabilityCreateManyInput = {
-    id?: number
-    service_id: number
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-  }
-
-  export type availabilityUpdateManyMutationInput = {
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type availabilityUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    service_id?: IntFieldUpdateOperationsInput | number
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type bookingsCreateInput = {
@@ -10227,7 +8941,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityCreateNestedManyWithoutServicesInput
     bookings?: bookingsCreateNestedManyWithoutServicesInput
     businesses: businessesCreateNestedOneWithoutServicesInput
   }
@@ -10241,7 +8954,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityUncheckedCreateNestedManyWithoutServicesInput
     bookings?: bookingsUncheckedCreateNestedManyWithoutServicesInput
   }
 
@@ -10252,7 +8964,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUpdateManyWithoutServicesNestedInput
     bookings?: bookingsUpdateManyWithoutServicesNestedInput
     businesses?: businessesUpdateOneRequiredWithoutServicesNestedInput
   }
@@ -10266,7 +8977,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUncheckedUpdateManyWithoutServicesNestedInput
     bookings?: bookingsUncheckedUpdateManyWithoutServicesNestedInput
   }
 
@@ -10398,11 +9108,15 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type Enumavailability_day_of_weekFilter<$PrismaModel = never> = {
-    equals?: $Enums.availability_day_of_week | Enumavailability_day_of_weekFieldRefInput<$PrismaModel>
-    in?: $Enums.availability_day_of_week[]
-    notIn?: $Enums.availability_day_of_week[]
-    not?: NestedEnumavailability_day_of_weekFilter<$PrismaModel> | $Enums.availability_day_of_week
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -10414,134 +9128,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type ServicesScalarRelationFilter = {
-    is?: servicesWhereInput
-    isNot?: servicesWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type availabilityCountOrderByAggregateInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    day_of_week?: SortOrder
-    start_time?: SortOrder
-    end_time?: SortOrder
-    max_bookings?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type availabilityAvgOrderByAggregateInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    max_bookings?: SortOrder
-  }
-
-  export type availabilityMaxOrderByAggregateInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    day_of_week?: SortOrder
-    start_time?: SortOrder
-    end_time?: SortOrder
-    max_bookings?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type availabilityMinOrderByAggregateInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    day_of_week?: SortOrder
-    start_time?: SortOrder
-    end_time?: SortOrder
-    max_bookings?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type availabilitySumOrderByAggregateInput = {
-    id?: SortOrder
-    service_id?: SortOrder
-    max_bookings?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type Enumavailability_day_of_weekWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.availability_day_of_week | Enumavailability_day_of_weekFieldRefInput<$PrismaModel>
-    in?: $Enums.availability_day_of_week[]
-    notIn?: $Enums.availability_day_of_week[]
-    not?: NestedEnumavailability_day_of_weekWithAggregatesFilter<$PrismaModel> | $Enums.availability_day_of_week
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumavailability_day_of_weekFilter<$PrismaModel>
-    _max?: NestedEnumavailability_day_of_weekFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type Enumbookings_statusFilter<$PrismaModel = never> = {
@@ -10566,6 +9152,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type EmployeesNullableScalarRelationFilter = {
     is?: employeesWhereInput | null
     isNot?: employeesWhereInput | null
@@ -10579,6 +9176,16 @@ export namespace Prisma {
   export type BusinessesScalarRelationFilter = {
     is?: businessesWhereInput
     isNot?: businessesWhereInput
+  }
+
+  export type ServicesScalarRelationFilter = {
+    is?: servicesWhereInput
+    isNot?: servicesWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type bookingsOrderByRelevanceInput = {
@@ -10642,6 +9249,22 @@ export namespace Prisma {
     employee_id?: SortOrder
   }
 
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -10656,6 +9279,20 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type Enumbookings_statusWithAggregatesFilter<$PrismaModel = never> = {
@@ -10684,6 +9321,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -10959,16 +9610,6 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type AvailabilityListRelationFilter = {
-    every?: availabilityWhereInput
-    some?: availabilityWhereInput
-    none?: availabilityWhereInput
-  }
-
-  export type availabilityOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type servicesOrderByRelevanceInput = {
     fields: servicesOrderByRelevanceFieldEnum | servicesOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -11098,40 +9739,6 @@ export namespace Prisma {
     _max?: NestedEnumusers_roleFilter<$PrismaModel>
   }
 
-  export type servicesCreateNestedOneWithoutAvailabilityInput = {
-    create?: XOR<servicesCreateWithoutAvailabilityInput, servicesUncheckedCreateWithoutAvailabilityInput>
-    connectOrCreate?: servicesCreateOrConnectWithoutAvailabilityInput
-    connect?: servicesWhereUniqueInput
-  }
-
-  export type Enumavailability_day_of_weekFieldUpdateOperationsInput = {
-    set?: $Enums.availability_day_of_week
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type servicesUpdateOneRequiredWithoutAvailabilityNestedInput = {
-    create?: XOR<servicesCreateWithoutAvailabilityInput, servicesUncheckedCreateWithoutAvailabilityInput>
-    connectOrCreate?: servicesCreateOrConnectWithoutAvailabilityInput
-    upsert?: servicesUpsertWithoutAvailabilityInput
-    connect?: servicesWhereUniqueInput
-    update?: XOR<XOR<servicesUpdateToOneWithWhereWithoutAvailabilityInput, servicesUpdateWithoutAvailabilityInput>, servicesUncheckedUpdateWithoutAvailabilityInput>
-  }
-
   export type employeesCreateNestedOneWithoutBookingsInput = {
     create?: XOR<employeesCreateWithoutBookingsInput, employeesUncheckedCreateWithoutBookingsInput>
     connectOrCreate?: employeesCreateOrConnectWithoutBookingsInput
@@ -11156,12 +9763,20 @@ export namespace Prisma {
     connect?: servicesWhereUniqueInput
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type Enumbookings_statusFieldUpdateOperationsInput = {
     set?: $Enums.bookings_status
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type employeesUpdateOneWithoutBookingsNestedInput = {
@@ -11196,6 +9811,14 @@ export namespace Prisma {
     upsert?: servicesUpsertWithoutBookingsInput
     connect?: servicesWhereUniqueInput
     update?: XOR<XOR<servicesUpdateToOneWithWhereWithoutBookingsInput, servicesUpdateWithoutBookingsInput>, servicesUncheckedUpdateWithoutBookingsInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -11488,13 +10111,6 @@ export namespace Prisma {
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutReviewsInput, usersUpdateWithoutReviewsInput>, usersUncheckedUpdateWithoutReviewsInput>
   }
 
-  export type availabilityCreateNestedManyWithoutServicesInput = {
-    create?: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput> | availabilityCreateWithoutServicesInput[] | availabilityUncheckedCreateWithoutServicesInput[]
-    connectOrCreate?: availabilityCreateOrConnectWithoutServicesInput | availabilityCreateOrConnectWithoutServicesInput[]
-    createMany?: availabilityCreateManyServicesInputEnvelope
-    connect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-  }
-
   export type bookingsCreateNestedManyWithoutServicesInput = {
     create?: XOR<bookingsCreateWithoutServicesInput, bookingsUncheckedCreateWithoutServicesInput> | bookingsCreateWithoutServicesInput[] | bookingsUncheckedCreateWithoutServicesInput[]
     connectOrCreate?: bookingsCreateOrConnectWithoutServicesInput | bookingsCreateOrConnectWithoutServicesInput[]
@@ -11508,32 +10124,11 @@ export namespace Prisma {
     connect?: businessesWhereUniqueInput
   }
 
-  export type availabilityUncheckedCreateNestedManyWithoutServicesInput = {
-    create?: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput> | availabilityCreateWithoutServicesInput[] | availabilityUncheckedCreateWithoutServicesInput[]
-    connectOrCreate?: availabilityCreateOrConnectWithoutServicesInput | availabilityCreateOrConnectWithoutServicesInput[]
-    createMany?: availabilityCreateManyServicesInputEnvelope
-    connect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-  }
-
   export type bookingsUncheckedCreateNestedManyWithoutServicesInput = {
     create?: XOR<bookingsCreateWithoutServicesInput, bookingsUncheckedCreateWithoutServicesInput> | bookingsCreateWithoutServicesInput[] | bookingsUncheckedCreateWithoutServicesInput[]
     connectOrCreate?: bookingsCreateOrConnectWithoutServicesInput | bookingsCreateOrConnectWithoutServicesInput[]
     createMany?: bookingsCreateManyServicesInputEnvelope
     connect?: bookingsWhereUniqueInput | bookingsWhereUniqueInput[]
-  }
-
-  export type availabilityUpdateManyWithoutServicesNestedInput = {
-    create?: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput> | availabilityCreateWithoutServicesInput[] | availabilityUncheckedCreateWithoutServicesInput[]
-    connectOrCreate?: availabilityCreateOrConnectWithoutServicesInput | availabilityCreateOrConnectWithoutServicesInput[]
-    upsert?: availabilityUpsertWithWhereUniqueWithoutServicesInput | availabilityUpsertWithWhereUniqueWithoutServicesInput[]
-    createMany?: availabilityCreateManyServicesInputEnvelope
-    set?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    disconnect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    delete?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    connect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    update?: availabilityUpdateWithWhereUniqueWithoutServicesInput | availabilityUpdateWithWhereUniqueWithoutServicesInput[]
-    updateMany?: availabilityUpdateManyWithWhereWithoutServicesInput | availabilityUpdateManyWithWhereWithoutServicesInput[]
-    deleteMany?: availabilityScalarWhereInput | availabilityScalarWhereInput[]
   }
 
   export type bookingsUpdateManyWithoutServicesNestedInput = {
@@ -11556,20 +10151,6 @@ export namespace Prisma {
     upsert?: businessesUpsertWithoutServicesInput
     connect?: businessesWhereUniqueInput
     update?: XOR<XOR<businessesUpdateToOneWithWhereWithoutServicesInput, businessesUpdateWithoutServicesInput>, businessesUncheckedUpdateWithoutServicesInput>
-  }
-
-  export type availabilityUncheckedUpdateManyWithoutServicesNestedInput = {
-    create?: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput> | availabilityCreateWithoutServicesInput[] | availabilityUncheckedCreateWithoutServicesInput[]
-    connectOrCreate?: availabilityCreateOrConnectWithoutServicesInput | availabilityCreateOrConnectWithoutServicesInput[]
-    upsert?: availabilityUpsertWithWhereUniqueWithoutServicesInput | availabilityUpsertWithWhereUniqueWithoutServicesInput[]
-    createMany?: availabilityCreateManyServicesInputEnvelope
-    set?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    disconnect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    delete?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    connect?: availabilityWhereUniqueInput | availabilityWhereUniqueInput[]
-    update?: availabilityUpdateWithWhereUniqueWithoutServicesInput | availabilityUpdateWithWhereUniqueWithoutServicesInput[]
-    updateMany?: availabilityUpdateManyWithWhereWithoutServicesInput | availabilityUpdateManyWithWhereWithoutServicesInput[]
-    deleteMany?: availabilityScalarWhereInput | availabilityScalarWhereInput[]
   }
 
   export type bookingsUncheckedUpdateManyWithoutServicesNestedInput = {
@@ -11727,11 +10308,15 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumavailability_day_of_weekFilter<$PrismaModel = never> = {
-    equals?: $Enums.availability_day_of_week | Enumavailability_day_of_weekFieldRefInput<$PrismaModel>
-    in?: $Enums.availability_day_of_week[]
-    notIn?: $Enums.availability_day_of_week[]
-    not?: NestedEnumavailability_day_of_weekFilter<$PrismaModel> | $Enums.availability_day_of_week
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -11743,6 +10328,28 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumbookings_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.bookings_status | Enumbookings_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.bookings_status[]
+    notIn?: $Enums.bookings_status[]
+    not?: NestedEnumbookings_statusFilter<$PrismaModel> | $Enums.bookings_status
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -11783,77 +10390,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumavailability_day_of_weekWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.availability_day_of_week | Enumavailability_day_of_weekFieldRefInput<$PrismaModel>
-    in?: $Enums.availability_day_of_week[]
-    notIn?: $Enums.availability_day_of_week[]
-    not?: NestedEnumavailability_day_of_weekWithAggregatesFilter<$PrismaModel> | $Enums.availability_day_of_week
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumavailability_day_of_weekFilter<$PrismaModel>
-    _max?: NestedEnumavailability_day_of_weekFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumbookings_statusFilter<$PrismaModel = never> = {
-    equals?: $Enums.bookings_status | Enumbookings_statusFieldRefInput<$PrismaModel>
-    in?: $Enums.bookings_status[]
-    notIn?: $Enums.bookings_status[]
-    not?: NestedEnumbookings_statusFilter<$PrismaModel> | $Enums.bookings_status
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -11879,6 +10415,20 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedEnumbookings_statusWithAggregatesFilter<$PrismaModel = never> = {
@@ -11907,6 +10457,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -11997,68 +10561,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumusers_roleFilter<$PrismaModel>
     _max?: NestedEnumusers_roleFilter<$PrismaModel>
-  }
-
-  export type servicesCreateWithoutAvailabilityInput = {
-    name: string
-    description?: string | null
-    duration_minutes: number
-    category?: string | null
-    price: Decimal | DecimalJsLike | number | string
-    created_at?: Date | string | null
-    bookings?: bookingsCreateNestedManyWithoutServicesInput
-    businesses: businessesCreateNestedOneWithoutServicesInput
-  }
-
-  export type servicesUncheckedCreateWithoutAvailabilityInput = {
-    id?: number
-    business_id: number
-    name: string
-    description?: string | null
-    duration_minutes: number
-    category?: string | null
-    price: Decimal | DecimalJsLike | number | string
-    created_at?: Date | string | null
-    bookings?: bookingsUncheckedCreateNestedManyWithoutServicesInput
-  }
-
-  export type servicesCreateOrConnectWithoutAvailabilityInput = {
-    where: servicesWhereUniqueInput
-    create: XOR<servicesCreateWithoutAvailabilityInput, servicesUncheckedCreateWithoutAvailabilityInput>
-  }
-
-  export type servicesUpsertWithoutAvailabilityInput = {
-    update: XOR<servicesUpdateWithoutAvailabilityInput, servicesUncheckedUpdateWithoutAvailabilityInput>
-    create: XOR<servicesCreateWithoutAvailabilityInput, servicesUncheckedCreateWithoutAvailabilityInput>
-    where?: servicesWhereInput
-  }
-
-  export type servicesUpdateToOneWithWhereWithoutAvailabilityInput = {
-    where?: servicesWhereInput
-    data: XOR<servicesUpdateWithoutAvailabilityInput, servicesUncheckedUpdateWithoutAvailabilityInput>
-  }
-
-  export type servicesUpdateWithoutAvailabilityInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    duration_minutes?: IntFieldUpdateOperationsInput | number
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookings?: bookingsUpdateManyWithoutServicesNestedInput
-    businesses?: businessesUpdateOneRequiredWithoutServicesNestedInput
-  }
-
-  export type servicesUncheckedUpdateWithoutAvailabilityInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    business_id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    duration_minutes?: IntFieldUpdateOperationsInput | number
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookings?: bookingsUncheckedUpdateManyWithoutServicesNestedInput
   }
 
   export type employeesCreateWithoutBookingsInput = {
@@ -12166,7 +10668,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityCreateNestedManyWithoutServicesInput
     businesses: businessesCreateNestedOneWithoutServicesInput
   }
 
@@ -12179,7 +10680,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityUncheckedCreateNestedManyWithoutServicesInput
   }
 
   export type servicesCreateOrConnectWithoutBookingsInput = {
@@ -12321,7 +10821,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUpdateManyWithoutServicesNestedInput
     businesses?: businessesUpdateOneRequiredWithoutServicesNestedInput
   }
 
@@ -12334,7 +10833,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUncheckedUpdateManyWithoutServicesNestedInput
   }
 
   export type bookingsCreateWithoutBusinessesInput = {
@@ -12463,7 +10961,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityCreateNestedManyWithoutServicesInput
     bookings?: bookingsCreateNestedManyWithoutServicesInput
   }
 
@@ -12475,7 +10972,6 @@ export namespace Prisma {
     category?: string | null
     price: Decimal | DecimalJsLike | number | string
     created_at?: Date | string | null
-    availability?: availabilityUncheckedCreateNestedManyWithoutServicesInput
     bookings?: bookingsUncheckedCreateNestedManyWithoutServicesInput
   }
 
@@ -12940,33 +11436,6 @@ export namespace Prisma {
     businesses?: businessesUncheckedUpdateManyWithoutUsersNestedInput
   }
 
-  export type availabilityCreateWithoutServicesInput = {
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-  }
-
-  export type availabilityUncheckedCreateWithoutServicesInput = {
-    id?: number
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-  }
-
-  export type availabilityCreateOrConnectWithoutServicesInput = {
-    where: availabilityWhereUniqueInput
-    create: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput>
-  }
-
-  export type availabilityCreateManyServicesInputEnvelope = {
-    data: availabilityCreateManyServicesInput | availabilityCreateManyServicesInput[]
-    skipDuplicates?: boolean
-  }
-
   export type bookingsCreateWithoutServicesInput = {
     booking_date: Date | string
     booking_time: Date | string
@@ -13040,35 +11509,6 @@ export namespace Prisma {
   export type businessesCreateOrConnectWithoutServicesInput = {
     where: businessesWhereUniqueInput
     create: XOR<businessesCreateWithoutServicesInput, businessesUncheckedCreateWithoutServicesInput>
-  }
-
-  export type availabilityUpsertWithWhereUniqueWithoutServicesInput = {
-    where: availabilityWhereUniqueInput
-    update: XOR<availabilityUpdateWithoutServicesInput, availabilityUncheckedUpdateWithoutServicesInput>
-    create: XOR<availabilityCreateWithoutServicesInput, availabilityUncheckedCreateWithoutServicesInput>
-  }
-
-  export type availabilityUpdateWithWhereUniqueWithoutServicesInput = {
-    where: availabilityWhereUniqueInput
-    data: XOR<availabilityUpdateWithoutServicesInput, availabilityUncheckedUpdateWithoutServicesInput>
-  }
-
-  export type availabilityUpdateManyWithWhereWithoutServicesInput = {
-    where: availabilityScalarWhereInput
-    data: XOR<availabilityUpdateManyMutationInput, availabilityUncheckedUpdateManyWithoutServicesInput>
-  }
-
-  export type availabilityScalarWhereInput = {
-    AND?: availabilityScalarWhereInput | availabilityScalarWhereInput[]
-    OR?: availabilityScalarWhereInput[]
-    NOT?: availabilityScalarWhereInput | availabilityScalarWhereInput[]
-    id?: IntFilter<"availability"> | number
-    service_id?: IntFilter<"availability"> | number
-    day_of_week?: Enumavailability_day_of_weekFilter<"availability"> | $Enums.availability_day_of_week
-    start_time?: DateTimeFilter<"availability"> | Date | string
-    end_time?: DateTimeFilter<"availability"> | Date | string
-    max_bookings?: IntFilter<"availability"> | number
-    created_at?: DateTimeNullableFilter<"availability"> | Date | string | null
   }
 
   export type bookingsUpsertWithWhereUniqueWithoutServicesInput = {
@@ -13443,7 +11883,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUpdateManyWithoutServicesNestedInput
     bookings?: bookingsUpdateManyWithoutServicesNestedInput
   }
 
@@ -13455,7 +11894,6 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    availability?: availabilityUncheckedUpdateManyWithoutServicesNestedInput
     bookings?: bookingsUncheckedUpdateManyWithoutServicesNestedInput
   }
 
@@ -13516,15 +11954,6 @@ export namespace Prisma {
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type availabilityCreateManyServicesInput = {
-    id?: number
-    day_of_week: $Enums.availability_day_of_week
-    start_time: Date | string
-    end_time: Date | string
-    max_bookings?: number
-    created_at?: Date | string | null
-  }
-
   export type bookingsCreateManyServicesInput = {
     id?: number
     user_id: number
@@ -13535,32 +11964,6 @@ export namespace Prisma {
     status?: $Enums.bookings_status
     notes?: string | null
     created_at?: Date | string | null
-  }
-
-  export type availabilityUpdateWithoutServicesInput = {
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type availabilityUncheckedUpdateWithoutServicesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type availabilityUncheckedUpdateManyWithoutServicesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    day_of_week?: Enumavailability_day_of_weekFieldUpdateOperationsInput | $Enums.availability_day_of_week
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    max_bookings?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type bookingsUpdateWithoutServicesInput = {
