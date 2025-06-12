@@ -1,7 +1,6 @@
 const EmployeeController = require('@controllers/employeeController');
 const EmployeeModel = require('@models/employeeModel');
 const { apiResponse, apiError } = require('@utils/apiResponse');
-const { validEmployee } = require('@tests/fixtures/employees');
 
 // Mock dependencies
 jest.mock('@models/employeeModel');
@@ -74,7 +73,6 @@ describe('EmployeeController', () => {
       const mockEmployee = { 
         id: 1, 
         name: 'John Doe', 
-        email: 'john@example.com',
         business_id: 1,
         position: 'Stylist'
       };
@@ -163,10 +161,7 @@ describe('EmployeeController', () => {
       req.body = {
         business_id: 1,
         name: 'New Employee',
-        email: 'new@example.com',
-        phone: '1234567890',
         position: 'Stylist',
-        specialties: ['Hair Cutting'],
         service_ids: [1, 2]
       };
     });
@@ -184,10 +179,8 @@ describe('EmployeeController', () => {
       expect(EmployeeModel.create).toHaveBeenCalledWith({
         business_id: 1,
         name: 'New Employee',
-        email: 'new@example.com',
-        phone: '1234567890',
         position: 'Stylist',
-        specialties: ['Hair Cutting'],
+        specialties: [],
         profile_image: undefined,
         service_ids: [1, 2]
       });
@@ -208,7 +201,7 @@ describe('EmployeeController', () => {
 
       await EmployeeController.createEmployee(req, res);
 
-      expect(apiError).toHaveBeenCalledWith(res, 409, 'Ya existe un empleado con este email');
+      expect(apiError).toHaveBeenCalledWith(res, 409, 'Ya existe un empleado con estos datos');
     });
 
     it('should handle database error', async () => {
@@ -229,8 +222,7 @@ describe('EmployeeController', () => {
       req.params = { id: '1' };
       req.body = {
         name: 'Updated Employee',
-        position: 'Senior Stylist',
-        phone: '0987654321'
+        position: 'Senior Stylist'
       };
     });
 
@@ -249,8 +241,7 @@ describe('EmployeeController', () => {
       expect(EmployeeModel.getById).toHaveBeenCalledWith(1);
       expect(EmployeeModel.update).toHaveBeenCalledWith(1, {
         name: 'Updated Employee',
-        position: 'Senior Stylist',
-        phone: '0987654321'
+        position: 'Senior Stylist'
       });
       expect(apiResponse).toHaveBeenCalledWith(res, 200, {
         success: true,
@@ -283,7 +274,7 @@ describe('EmployeeController', () => {
 
       await EmployeeController.updateEmployee(req, res);
 
-      expect(apiError).toHaveBeenCalledWith(res, 409, 'Ya existe un empleado con este email');
+      expect(apiError).toHaveBeenCalledWith(res, 409, 'Ya existe un empleado con estos datos');
     });
   });
 

@@ -33,8 +33,7 @@ describe('AuthController', () => {
     jest.clearAllMocks();
   });
 
-  describe('register', () => {
-    test('debería registrar un usuario exitosamente', async () => {
+  describe('register', () => {    test('debería registrar un usuario exitosamente', async () => {
       // Arrange
       req.body = validUser;
       const hashedPassword = 'hashedPassword123';
@@ -43,7 +42,6 @@ describe('AuthController', () => {
       const accessToken = 'jwt-token-123';
 
       AuthModel.findByEmail.mockResolvedValue(null);
-      bcrypt.hash.mockResolvedValue(hashedPassword);
       AuthModel.createUser.mockResolvedValue(userId);
       UserModel.findById.mockResolvedValue(createdUser);
       generateAccessToken.mockReturnValue(accessToken);
@@ -52,16 +50,15 @@ describe('AuthController', () => {
       await authController.register(req, res);
 
       // Assert
-      expect(AuthModel.findByEmail).toHaveBeenCalledWith(validUser.email.toLowerCase().trim());
-      expect(bcrypt.hash).toHaveBeenCalledWith(validUser.password, 10);
-      expect(AuthModel.createUser).toHaveBeenCalledWith({
-        name: validUser.name.trim(),
-        email: validUser.email.toLowerCase().trim(),
-        password: hashedPassword,
-        role: validUser.role
-      });
-      expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith({
+      expect(AuthModel.findByEmail).toHaveBeenCalledWith(validUser.email);
+      expect(AuthModel.createUser).toHaveBeenCalledWith(
+        validUser.name.trim(),
+        validUser.email.toLowerCase().trim(),
+        validUser.password,
+        validUser.role,
+        undefined
+      );
+      expect(res.status).toHaveBeenCalledWith(201);      expect(res.json).toHaveBeenCalledWith({
         success: true,
         message: 'User registered successfully',
         data: {
@@ -70,7 +67,8 @@ describe('AuthController', () => {
             name: 'Juan Pérez',
             email: 'juan.perez@example.com',
             role: 'cliente',
-            created_at: undefined
+            created_at: undefined,
+            businessId: null
           },
           token: accessToken
         }

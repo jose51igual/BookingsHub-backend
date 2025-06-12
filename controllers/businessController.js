@@ -1,6 +1,7 @@
 const BusinessModel = require('@models/businessModel');
 const config = require('@config/index');
 const { apiResponse, apiError } = require('../utils/apiResponse');
+const logger = require('@utils/logger');
 
 /**
  * @desc    Get all businesses
