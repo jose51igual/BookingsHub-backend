@@ -97,6 +97,7 @@ jobs:
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID || 'falta' }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET || 'falta' }}
           LOG_LEVEL=${{ secrets.LOG_LEVEL || 'info' }}
+          CORS_ORIGIN=${{ secrets.CORS_ORIGIN || 'http://bookingshub.es,https://bookingshub.es,http://www.bookingshub.es,https://www.bookingshub.es' }}
           DATABASE_URL="mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT || 3306 }}/${{ secrets.DB_NAME }}"
           EOF
           echo ".env file created successfully."
@@ -121,11 +122,6 @@ jobs:
             exit 1
           }
           echo "Prisma client generated successfully."
-          
-          echo "Cleaning and populating database..."
-          # Reset database and populate with fresh data
-          echo "Resetting database..."
-          npx prisma db push --reset-database --accept-data-loss --force-reset || echo "Database reset failed, continuing..."
           
           echo "Populating database with fresh data..."
           npx prisma db seed || echo "Database seeding failed, continuing..."
