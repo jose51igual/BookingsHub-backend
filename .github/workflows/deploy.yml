@@ -115,7 +115,7 @@ jobs:
           }
           echo "Prisma migrations completed."
 
-          echo "Generating Prisma client..."
+          echo "Generating Prisma client.."
           npx prisma generate || {
             echo "Prisma client generation failed"
             exit 1
