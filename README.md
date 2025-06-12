@@ -73,10 +73,28 @@ cd ..
 docker-compose up -d
 ```
 
-5. **Ejecutar migraciones/seeds**
+5. **Configurar base de datos con Prisma**
 ```bash
-npm run seed-data
+# Opción 1: Configuración completa (recomendado para desarrollo)
+npm run db:setup:dev
+
+# Opción 2: Solo migraciones y seed (para producción)
+npm run db:setup
+
+# Opción 3: Comandos individuales
+npm run db:migrate    # Ejecutar migraciones
+npm run db:generate   # Generar cliente de Prisma
+npm run db:seed       # Poblar base de datos con datos de prueba
 ```
+
+**Scripts de base de datos disponibles:**
+- `npm run db:migrate` - Ejecutar migraciones de Prisma
+- `npm run db:generate` - Generar cliente de Prisma
+- `npm run db:seed` - Poblar base de datos con datos de prueba
+- `npm run db:reset` - Resetear base de datos y ejecutar seed
+- `npm run db:setup` - Configuración completa (migrar + generar + seed)
+- `npm run db:setup:dev` - Configuración para desarrollo (reset + generar + seed)
+- `npm run db:studio` - Abrir Prisma Studio para ver la base de datos
 
 6. **Iniciar servidor de desarrollo**
 ```bash

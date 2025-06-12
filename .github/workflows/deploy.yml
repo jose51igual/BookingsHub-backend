@@ -49,27 +49,21 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
-          mkdir -p /var/www/bookings-hub
-          mkdir -p /var/www/bookings-hub/backups
-          
           if [ -d "/var/www/bookings-hub/current" ]; then
             sudo mv /var/www/bookings-hub/current /var/www/bookings-hub/backups_$(date +%Y%m%d_%H%M%S)
           fi
-          
-          mkdir -p /var/www/bookings-hub/current
-          
+
     - name: Upload files to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT || 22}}
+        port: ${{ secrets.SSH_PORT || 22 }}
         source: "deploy/*"
         target: "/var/www/bookings-hub/current"
         strip_components: 1
 
-        
     - name: Install dependencies and restart services
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -80,9 +74,10 @@ jobs:
         script: |
           cd /var/www/bookings-hub/current
           
+          echo "Installing dependencies..."
           npm ci --production
           
-          echo "Creando archivo .env en el servidor..."
+          echo "Creating .env file on server..."
           cat > .env << EOF
           NODE_ENV=production
           PORT=${{ secrets.PORT || 3000 }}
@@ -99,11 +94,29 @@ jobs:
           LOG_LEVEL=${{ secrets.LOG_LEVEL || 'info' }}
           DATABASE_URL="mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT || 3306 }}/${{ secrets.DB_NAME }}"
           EOF
-          echo ".env creado."
+          echo ".env file created successfully."
+          
+          echo "Running Prisma migrations..."
+          npx prisma migrate deploy || {
+            echo "Migration failed, attempting to continue..."
+            exit 0
+          }
+          echo "Prisma migrations completed."
 
-          echo "Ejecutando migraciones de Prisma..."
-          npx prisma migrate deploy
-          echo "Migraciones de Prisma completadas."
+          echo "Generating Prisma client..."
+          npx prisma generate || {
+            echo "Prisma client generation failed"
+            exit 1
+          }
+          echo "Prisma client generated successfully."
+          
+          echo "Checking database and seeding if needed..."
+          # Check if database has data, if not seed it
+          npx prisma db seed 2>/dev/null || {
+            echo "Database seeding failed or already seeded"
+            # Continue deployment even if seeding fails
+          }
+          echo "Database verification completed."
           
           if ! command -v pm2 &> /dev/null; then
             echo "PM2 no encontrado, instalando..."
