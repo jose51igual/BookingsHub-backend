@@ -1,11 +1,11 @@
-const { PrismaClient } = require('@prisma/client');
-const { faker } = require('@faker-js/faker/locale/es');
+const { PrismaClient } = require('../generated/prisma');
+const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
 // Configuración faker en español
-faker.setLocale('es');
+faker.locale = 'es';
 
 // Categorías de negocios para selección aleatoria
 const businessCategories = [
@@ -44,7 +44,6 @@ async function clearDatabase() {
   // Orden de eliminación para respetar las relaciones
   await prisma.reviews.deleteMany();
   await prisma.bookings.deleteMany();
-  await prisma.availability.deleteMany();
   await prisma.employees.deleteMany();
   await prisma.services.deleteMany();
   await prisma.businesses.deleteMany();
@@ -54,7 +53,7 @@ async function clearDatabase() {
 }
 
 // Generar usuarios
-async function generateUsers(count = 100) {
+async function generateUsers(count = 20) {
   console.log(`👥 Generando ${count} usuarios...`);
   
   const users = [];
@@ -78,7 +77,7 @@ async function generateUsers(count = 100) {
   }
   
   // Crear usuarios en lotes para mejor rendimiento
-  const batchSize = 50;
+  const batchSize = 20;
   for (let i = 0; i < users.length; i += batchSize) {
     const batch = users.slice(i, i + batchSize);
     await prisma.users.createMany({
@@ -91,7 +90,7 @@ async function generateUsers(count = 100) {
 }
 
 // Generar negocios
-async function generateBusinesses(count = 25) {
+async function generateBusinesses(count = 10) {
   console.log(`🏢 Generando ${count} negocios...`);
   
   // Obtener usuarios con rol 'negocio'
@@ -128,7 +127,7 @@ async function generateBusinesses(count = 25) {
   }
   
   // Crear negocios en lotes
-  const batchSize = 25;
+  const batchSize = 10;
   for (let i = 0; i < businesses.length; i += batchSize) {
     const batch = businesses.slice(i, i + batchSize);
     await prisma.businesses.createMany({
@@ -148,8 +147,8 @@ async function generateEmployees() {
   const employees = [];
   
   for (const business of businesses) {
-    // Generar entre 2 y 5 empleados por negocio
-    const numEmployees = faker.number.int({ min: 2, max: 5 });
+    // Generar entre 1 y 3 empleados por negocio
+    const numEmployees = faker.number.int({ min: 1, max: 3 });
     
     for (let i = 0; i < numEmployees; i++) {
       const specialties = faker.helpers.arrayElements([
@@ -191,8 +190,8 @@ async function generateServices() {
   const services = [];
   
   for (const business of businesses) {
-    // Generar entre 5 y 12 servicios por negocio
-    const numServices = faker.number.int({ min: 5, max: 12 });
+    // Generar entre 3 y 6 servicios por negocio
+    const numServices = faker.number.int({ min: 3, max: 6 });
     
     for (let i = 0; i < numServices; i++) {
       const durationMinutes = faker.helpers.arrayElement(serviceDurations);
@@ -225,86 +224,6 @@ async function generateServices() {
   return services;
 }
 
-// Generar disponibilidad
-async function generateAvailability() {
-  console.log('📅 Generando disponibilidad...');
-  
-  const services = await prisma.services.findMany({
-    include: {
-      businesses: true
-    }
-  });
-  
-  const availabilityRecords = [];
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  
-  for (const service of services) {
-    for (const day of days) {
-      // 80% de probabilidad de tener disponibilidad ese día
-      if (faker.datatype.boolean(0.8)) {
-        const business = service.businesses;
-        
-        // Extraer horas de apertura y cierre del negocio
-        const hoursMatch = business.opening_hours?.match(/(\d+):00 - (\d+):00/);
-        if (!hoursMatch) continue;
-        
-        const openHour = parseInt(hoursMatch[1], 10);
-        const closeHour = parseInt(hoursMatch[2], 10);
-        
-        // Generar slots de disponibilidad
-        let currentHour = openHour;
-        let currentMinutes = 0;
-        
-        while ((currentHour + (service.duration_minutes / 60)) <= closeHour) {
-          // Decidir si usar 0 o 30 minutos
-          currentMinutes = [0, 30][Math.floor(Math.random() * 2)];
-          
-          // Formatear hora de inicio
-          const startTime = `${currentHour.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}:00`;
-          
-          // Calcular hora de fin basado en la duración del servicio
-          let totalMinutes = (currentHour * 60) + currentMinutes + service.duration_minutes;
-          const endHour = Math.floor(totalMinutes / 60);
-          const endMinutes = totalMinutes % 60;
-          const endTime = `${endHour.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
-          
-          const availability = {
-            service_id: service.id,
-            day_of_week: day,
-            start_time: startTime,
-            end_time: endTime,
-            max_bookings: faker.number.int({ min: 1, max: 3 }),
-            created_at: faker.date.past({ years: 1 })
-          };
-          
-          availabilityRecords.push(availability);
-          
-          // Avanzar a la siguiente hora o media hora
-          const increment = faker.helpers.arrayElement([0.5, 1]);
-          currentHour += increment;
-          
-          // Asegurar que las horas sean números enteros o .5
-          if (currentHour % 1 !== 0 && currentHour % 1 !== 0.5) {
-            currentHour = Math.ceil(currentHour);
-          }
-        }
-      }
-    }
-  }
-  
-  // Crear disponibilidad en lotes
-  const batchSize = 100;
-  for (let i = 0; i < availabilityRecords.length; i += batchSize) {
-    const batch = availabilityRecords.slice(i, i + batchSize);
-    await prisma.availability.createMany({
-      data: batch
-    });
-  }
-  
-  console.log(`✅ ${availabilityRecords.length} registros de disponibilidad generados correctamente.`);
-  return availabilityRecords;
-}
-
 // Generar reservas
 async function generateBookings() {
   console.log('📝 Generando reservas...');
@@ -313,13 +232,9 @@ async function generateBookings() {
     where: { role: 'cliente' }
   });
   
-  const availability = await prisma.availability.findMany({
+  const services = await prisma.services.findMany({
     include: {
-      services: {
-        include: {
-          businesses: true
-        }
-      }
+      businesses: true
     }
   });
   
@@ -344,57 +259,44 @@ async function generateBookings() {
   
   const allDates = [...pastDates, ...futureDates];
   
-  for (const slot of availability) {
-    // Generar entre 0 y 3 reservas por slot de disponibilidad
+  // Generar horarios disponibles (de 9:00 a 18:00 cada hora)
+  const availableHours = Array.from({ length: 10 }, (_, i) => {
+    const hour = 9 + i;
+    return `${hour.toString().padStart(2, '0')}:00`;
+  });
+  
+  for (const service of services) {
+    // Generar entre 0 y 3 reservas por servicio
     const numBookings = faker.number.int({ min: 0, max: 3 });
     
     for (let i = 0; i < numBookings; i++) {
       const client = faker.helpers.arrayElement(clients);
       const bookingDate = faker.helpers.arrayElement(allDates);
-      
-      // Asegurar que la fecha corresponde al día de la semana correcto
-      const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][bookingDate.getDay()];
-      if (dayOfWeek !== slot.day_of_week) {
-        const daysUntilMatchingDay = {
-          'Monday': (1 + 7 - bookingDate.getDay()) % 7,
-          'Tuesday': (2 + 7 - bookingDate.getDay()) % 7,
-          'Wednesday': (3 + 7 - bookingDate.getDay()) % 7,
-          'Thursday': (4 + 7 - bookingDate.getDay()) % 7,
-          'Friday': (5 + 7 - bookingDate.getDay()) % 7
-        }[slot.day_of_week];
-        
-        bookingDate.setDate(bookingDate.getDate() + daysUntilMatchingDay);
-      }
+      const bookingTime = faker.helpers.arrayElement(availableHours);
       
       // Determinar estado basado en la fecha
       let status;
-      if (i < numBookings / 2) { // Primera mitad: reservas pasadas
-        if (bookingDate >= now) {
-          bookingDate.setMonth(bookingDate.getMonth() - faker.number.int({ min: 1, max: 6 }));
-        }
+      if (bookingDate < now) {
         status = faker.helpers.arrayElement(['completada', 'cancelada']);
-      } else { // Segunda mitad: reservas futuras
-        if (bookingDate <= now) {
-          bookingDate.setMonth(bookingDate.getMonth() + faker.number.int({ min: 1, max: 6 }));
-        }
+      } else {
         status = faker.helpers.arrayElement(['confirmada', 'pendiente']);
       }
       
       // Seleccionar empleado aleatorio del negocio
-      const businessEmployees = employees.filter(emp => emp.business_id === slot.services.business_id);
+      const businessEmployees = employees.filter(emp => emp.business_id === service.business_id);
       const selectedEmployee = businessEmployees.length > 0 ? faker.helpers.arrayElement(businessEmployees) : null;
       
-      // Convertir start_time a DateTime para booking_time
-      const [hours, minutes] = slot.start_time.split(':');
-      const bookingTime = new Date(`1970-01-01T${hours}:${minutes}:00.000Z`);
+      // Convertir bookingTime a DateTime para booking_time
+      const [hours, minutes] = bookingTime.split(':');
+      const bookingTimeDate = new Date(`1970-01-01T${hours}:${minutes}:00.000Z`);
       
       const booking = {
         user_id: client.id,
-        business_id: slot.services.business_id,
-        service_id: slot.service_id,
+        business_id: service.business_id,
+        service_id: service.id,
         employee_id: selectedEmployee?.id || null,
         booking_date: bookingDate,
-        booking_time: bookingTime,
+        booking_time: bookingTimeDate,
         status: status,
         notes: faker.datatype.boolean(0.3) ? faker.lorem.sentence() : null,
         created_at: faker.date.past({ years: 1, refDate: bookingDate })
@@ -532,11 +434,10 @@ async function main() {
     await clearDatabase();
     
     // Generar datos en orden
-    await generateUsers(100);
-    await generateBusinesses(25);
+    await generateUsers(20);
+    await generateBusinesses(10);
     await generateEmployees();
     await generateServices();
-    await generateAvailability();
     await generateBookings();
     await generateReviews();
     
@@ -548,7 +449,6 @@ async function main() {
       businesses: await prisma.businesses.count(),
       employees: await prisma.employees.count(),
       services: await prisma.services.count(),
-      availability: await prisma.availability.count(),
       bookings: await prisma.bookings.count(),
       reviews: await prisma.reviews.count()
     };
@@ -559,7 +459,7 @@ async function main() {
     });
     
   } catch (error) {
-    console.error('❌ Error al generar datos de prueba:', error);
+    console.error('Error al generar datos de prueba:', error);
     throw error;
   } finally {
     await prisma.$disconnect();

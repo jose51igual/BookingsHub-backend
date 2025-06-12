@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db:3306
--- Tiempo de generación: 04-06-2025 a las 17:04:28
+-- Tiempo de generación: 12-06-2025 a las 22:17:23
 -- Versión del servidor: 8.0.42
 -- Versión de PHP: 8.2.27
 
@@ -20,22 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `reservas`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `availability`
---
-
-CREATE TABLE `availability` (
-  `id` int NOT NULL,
-  `service_id` int NOT NULL,
-  `day_of_week` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
-  `max_bookings` int NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -149,14 +133,6 @@ CREATE TABLE `users` (
 --
 
 --
--- Indices de la tabla `availability`
---
-ALTER TABLE `availability`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_service_day` (`service_id`,`day_of_week`),
-  ADD KEY `idx_day_time` (`day_of_week`,`start_time`,`end_time`);
-
---
 -- Indices de la tabla `bookings`
 --
 ALTER TABLE `bookings`
@@ -209,12 +185,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `availability`
---
-ALTER TABLE `availability`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `bookings`
 --
 ALTER TABLE `bookings`
@@ -253,12 +223,6 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `availability`
---
-ALTER TABLE `availability`
-  ADD CONSTRAINT `availability_ibfk_1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `bookings`
