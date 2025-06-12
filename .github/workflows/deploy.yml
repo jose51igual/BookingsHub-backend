@@ -19,60 +19,34 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: package-lock.json # Correct: package-lock.json is at the root
+        cache-dependency-path: package-lock.json
         
     - name: Install dependencies
-      run: npm ci # Correct: Runs at the root
+      run: npm ci
       
     - name: Run tests
-      run: npm test # Correct: Runs at the root
+      run: npm test
       env:
         NODE_ENV: test
         
     - name: Create deployment package
       run: |
-        mkdir -p deploy/backend
-        echo "Copiando archivos al paquete de despliegue..."
-        # Habilitar globbing extendido para exclusión
-        shopt -s extglob
-        # Copiar todos los archivos y directorios excepto los especificados
-        # Esto asume que los archivos como app.js, package.json, etc., están en la raíz
-        # y serán copiados por el '*' si no coinciden con los patrones de exclusión.
-        # Usamos `cp -rT` para copiar el contenido de la raíz si es necesario, o `cp -r` con `*`
-        # Copiamos todo el contenido de la raíz (archivos y directorios)
-        # excepto los directorios/archivos que queremos excluir explícitamente.
-        # El patrón !(pattern1|pattern2) se aplica a los nombres en el directorio actual.
-        # Para copiar todo excepto ciertos elementos de la raíz a deploy/backend:
-        temp_deploy_dir="temp_deploy_package"
-        mkdir -p ${temp_deploy_dir}
-        cp -r * ${temp_deploy_dir}/ # Copia todo lo visible
-        if [ -d ".github" ]; then cp -r .github ${temp_deploy_dir}/; fi # Copia .github si existe
-        if [ -d ".git" ]; then cp -r .git ${temp_deploy_dir}/; fi # Copia .git si existe
-        # Ahora, desde temp_deploy_dir, mueve lo que quieres a deploy/backend
-        # O, más simple, copiar todo y luego eliminar lo no deseado del destino
+        mkdir -p deploy
+        # Copiar todos los archivos y carpetas excepto los especificados
+        shopt -s extglob # Habilitar patrones extendidos de globbing
+        cp -r !(deploy|.git*|.github|node_modules|logs|tests) deploy/
+      working-directory: .
+      run: |
+        mkdir -p ../deploy
+        cp -r . ../deploy/
+        rm -rf ../deploy/node_modules
+        rm -rf ../deploy/tests
+        rm -rf ../deploy/.git*
+        rm -rf ../deploy/logs/*
+        echo "VERSION=$(date +%Y%m%d_%H%M%S)" >> ../deploy/.env.deploy
+        echo "COMMIT_HASH=${{ github.sha }}" >> ../deploy/.env.deploy
         
-        mkdir -p deploy/backend
-        echo "Copiando archivos y directorios a deploy/backend/"
-        # Copia todo desde la raíz del checkout
-        cp -rp ./* deploy/backend/
-        
-        # Eliminar directorios/archivos no deseados del paquete de despliegue
-        echo "Eliminando archivos/directorios no deseados del paquete..."
-        rm -rf deploy/backend/node_modules
-        rm -rf deploy/backend/tests
-        rm -rf deploy/backend/.git* # Elimina .git y .gitignore, .gitattributes etc.
-        rm -rf deploy/backend/logs # Si tienes una carpeta logs que no quieres desplegar
-        rm -rf deploy/backend/.github # No necesitas los workflows en el servidor
-        rm -rf deploy/backend/deploy # No te copies a ti mismo recursivamente
-        # Considera otros archivos/carpetas a excluir, ej: Dockerfile, .env.example, etc.
-        # si no son necesarios en el servidor para la ejecución.
-        
-        echo "VERSION=$(date +%Y%m%d_%H%M%S)" >> deploy/backend/.env.deploy
-        echo "COMMIT_HASH=${{ github.sha }}" >> deploy/backend/.env.deploy
-        echo "Paquete de despliegue creado en deploy/backend/"
-        ls -la deploy/backend # Lista el contenido para depuración
-        
-    - name: Deploy to Server (Create directories)
+    - name: Deploy to Server
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -80,17 +54,14 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
-          mkdir -p /var/www/bookings-hub/backend
+          mkdir -p /var/www/bookings-hub
           mkdir -p /var/www/bookings-hub/backups
           
-          if [ -d "/var/www/bookings-hub/backend/current" ]; then
-            echo "Creando backup de la versión actual..."
-            sudo mv /var/www/bookings-hub/backend/current /var/www/bookings-hub/backups/backend_$(date +%Y%m%d_%H%M%S)
-            echo "Backup creado."
+          if [ -d "/var/www/bookings-hub/current" ]; then
+            sudo mv /var/www/bookings-hub/current /var/www/bookings-hub/backups_$(date +%Y%m%d_%H%M%S)
           fi
           
-          mkdir -p /var/www/bookings-hub/backend/current
-          echo "Directorio 'current' asegurado."
+          mkdir -p /var/www/bookings-hub/current
           
     - name: Upload files to server
       uses: appleboy/scp-action@v0.1.7
@@ -99,9 +70,9 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22}}
-        source: "deploy/backend/*" # Sube el contenido de deploy/backend/
-        target: "/var/www/bookings-hub/backend/current"
-        strip_components: 2 # Mantiene la estructura dentro de deploy/backend/*
+        source: "deploy/*"
+        target: "/var/www/bookings-hub/current"
+        strip_components: 2
         
     - name: Install dependencies and restart services
       uses: appleboy/ssh-action@v1.0.3
@@ -111,10 +82,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
-          cd /var/www/bookings-hub/backend/current
-          echo "Directorio actual en el servidor: $(pwd)"
+          cd /var/www/bookings-hub/current
           
-          echo "Instalando dependencias de producción..."
           npm ci --production
           
           echo "Creando archivo .env en el servidor..."
@@ -129,7 +98,6 @@ jobs:
           DB_NAME=${{ secrets.DB_NAME }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
-          CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID || 'falta' }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET || 'falta' }}
           LOG_LEVEL=${{ secrets.LOG_LEVEL || 'info' }}
@@ -142,15 +110,13 @@ jobs:
           echo "Migraciones de Prisma completadas."
           
           if ! command -v pm2 &> /dev/null; then
-            echo "PM2 no encontrado, instalando globalmente..."
+            echo "PM2 no encontrado, instalando..."
             sudo npm install -g pm2
           fi
 
-          echo "Reiniciando la aplicación con PM2 (ecosystem.config.js)..."
-          # Asegúrate de que ecosystem.config.js esté en la raíz de 'current'
-          # y que el nombre de la app en ecosystem.config.js sea 'bookings-hub-backend'
-          pm2 delete bookings-hub-backend || true 
+          echo "Reiniciando la aplicación con PM2..."
+          pm2 delete bookings-hub-backend || true
           pm2 start ecosystem.config.js --env production
-          pm2 save # Guarda la lista de procesos de PM2 para que se reinicien con el servidor
+          pm2 save
           
-          echo "Despliegue del backend completado exitosamente!"
+          echo "Backend deployment completed successfully!"
