@@ -101,6 +101,9 @@ jobs:
           EOF
           echo ".env file created successfully."
           
+          echo "Cleaning previous Prisma generation..."
+          rm -rf generated/prisma node_modules/.prisma
+          
           echo "Running Prisma migrations..."
           npx prisma migrate deploy || {
             echo "Migration failed, attempting to continue..."
