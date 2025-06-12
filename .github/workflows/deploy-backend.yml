@@ -3,9 +3,6 @@ name: Deploy Backend to Server
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/deploy-backend.yml'
   workflow_dispatch:
 
 jobs:
@@ -22,29 +19,27 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: backend/package-lock.json
+        cache-dependency-path: package-lock.json
         
     - name: Install dependencies
-      working-directory: ./backend
       run: npm ci
       
     - name: Run tests
-      working-directory: ./backend
       run: npm test
       env:
         NODE_ENV: test
         
     - name: Create deployment package
-      working-directory: ./backend
+      working-directory: .
       run: |
-        mkdir -p ../deploy/backend
-        cp -r . ../deploy/backend/
-        rm -rf ../deploy/backend/node_modules
-        rm -rf ../deploy/backend/tests
-        rm -rf ../deploy/backend/.git*
-        rm -rf ../deploy/backend/logs/*
-        echo "VERSION=$(date +%Y%m%d_%H%M%S)" >> ../deploy/backend/.env.deploy
-        echo "COMMIT_HASH=${{ github.sha }}" >> ../deploy/backend/.env.deploy
+        mkdir -p deploy
+        # Copiar todos los archivos y carpetas excepto los especificados
+        shopt -s extglob # Habilitar patrones extendidos de globbing
+        cp -r !(deploy|.git*|.github|node_modules|logs|tests) deploy/
+        
+        # Crear archivo de versión en el paquete de despliegue
+        echo "VERSION=$(date +%Y%m%d_%H%M%S)" > deploy/.env.deploy
+        echo "COMMIT_HASH=${{ github.sha }}" >> deploy/.env.deploy
         
     - name: Deploy to Server
       uses: appleboy/ssh-action@v1.0.3
@@ -54,14 +49,14 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
-          mkdir -p /var/www/bookings-hub/backend
+          mkdir -p /var/www/bookings-hub
           mkdir -p /var/www/bookings-hub/backups
           
-          if [ -d "/var/www/bookings-hub/backend/current" ]; then
-            sudo mv /var/www/bookings-hub/backend/current /var/www/bookings-hub/backups/backend_$(date +%Y%m%d_%H%M%S)
+          if [ -d "/var/www/bookings-hub/current" ]; then
+            sudo mv /var/www/bookings-hub/current /var/www/bookings-hub/backups_$(date +%Y%m%d_%H%M%S)
           fi
           
-          mkdir -p /var/www/bookings-hub/backend/current
+          mkdir -p /var/www/bookings-hub/current
           
     - name: Upload files to server
       uses: appleboy/scp-action@v0.1.7
@@ -70,8 +65,8 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22}}
-        source: "deploy/backend/*"
-        target: "/var/www/bookings-hub/backend/current"
+        source: "deploy/*"
+        target: "/var/www/bookings-hub/current"
         strip_components: 2
         
     - name: Install dependencies and restart services
@@ -82,7 +77,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT || 22 }}
         script: |
-          cd /var/www/bookings-hub/backend/current
+          cd /var/www/bookings-hub/current
           
           npm ci --production
           
