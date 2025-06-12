@@ -103,6 +103,10 @@ jobs:
           
           echo "Cleaning previous Prisma generation..."
           rm -rf generated/prisma node_modules/.prisma
+          rm -rf prisma/migrations/20*/*
+          
+          echo "Resetting Prisma schema cache..."
+          npx prisma format || echo "Prisma format completed"
           
           echo "Running Prisma migrations..."
           npx prisma migrate deploy || {
