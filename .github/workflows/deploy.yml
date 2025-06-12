@@ -30,21 +30,16 @@ jobs:
         NODE_ENV: test
         
     - name: Create deployment package
+      working-directory: .
       run: |
         mkdir -p deploy
         # Copiar todos los archivos y carpetas excepto los especificados
         shopt -s extglob # Habilitar patrones extendidos de globbing
         cp -r !(deploy|.git*|.github|node_modules|logs|tests) deploy/
-      working-directory: .
-      run: |
-        mkdir -p ../deploy
-        cp -r . ../deploy/
-        rm -rf ../deploy/node_modules
-        rm -rf ../deploy/tests
-        rm -rf ../deploy/.git*
-        rm -rf ../deploy/logs/*
-        echo "VERSION=$(date +%Y%m%d_%H%M%S)" >> ../deploy/.env.deploy
-        echo "COMMIT_HASH=${{ github.sha }}" >> ../deploy/.env.deploy
+        
+        # Crear archivo de versión en el paquete de despliegue
+        echo "VERSION=$(date +%Y%m%d_%H%M%S)" > deploy/.env.deploy
+        echo "COMMIT_HASH=${{ github.sha }}" >> deploy/.env.deploy
         
     - name: Deploy to Server
       uses: appleboy/ssh-action@v1.0.3
