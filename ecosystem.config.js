@@ -8,7 +8,7 @@ module.exports = {
     {
       name: 'bookings-hub-backend',
       script: 'app.js',
-      cwd: '/var/www/bookings-hub', // Ajusta esta ruta según tu servidor
+      cwd: '/var/www/bookings-hub/current', // Directorio donde está desplegado el código
       instances: 1, // Puedes usar 'max' para usar todos los cores
       exec_mode: 'fork', // o 'cluster' para múltiples instancias
       watch: false, // No usar watch en producción
@@ -26,9 +26,9 @@ module.exports = {
         PORT: 3001
       },
       // Configuración de logs
-      log_file: '/var/www/bookings-hub/logs/pm2-combined.log',
-      out_file: '/var/www/bookings-hub/logs/pm2-out.log',
-      error_file: '/var/www/bookings-hub/logs/pm2-error.log',
+      log_file: '/var/www/bookings-hub/current/logs/pm2-combined.log',
+      out_file: '/var/www/bookings-hub/current/logs/pm2-out.log',
+      error_file: '/var/www/bookings-hub/current/logs/pm2-error.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       
       // Configuración de restart
