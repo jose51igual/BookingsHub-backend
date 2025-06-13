@@ -60,12 +60,11 @@ async function generateUsers(count = 20) {
   const defaultPassword = await hashPassword('password123');
   
   // Crear usuarios específicos para pruebas
-  const testUsers = [
-    {
+  const testUsers = [    {
       name: 'Jose Cliente',
       email: 'jose@gmail.com',
       password: await hashPassword('123456'),
-      phone: 123456789,
+      phone: '123456789',
       role: 'cliente',
       created_at: new Date()
     },
@@ -73,7 +72,7 @@ async function generateUsers(count = 20) {
       name: 'Jose Negocio',
       email: 'josenegocio@gmail.com',
       password: await hashPassword('123456'),
-      phone: 987654321,
+      phone: '987654321',
       role: 'negocio',
       created_at: new Date()
     }
@@ -86,12 +85,11 @@ async function generateUsers(count = 20) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const role = i < (count - 2) / 2 ? 'cliente' : 'negocio';
-    
-    const user = {
+      const user = {
       name: `${firstName} ${lastName}`,
       email: faker.internet.email({ firstName, lastName }).toLowerCase(),
       password: defaultPassword,
-      phone: parseInt(faker.string.numeric(9)),
+      phone: faker.string.numeric(9),
       role: role,
       created_at: faker.date.past({ years: 1 })
     };
