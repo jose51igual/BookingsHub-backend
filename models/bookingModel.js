@@ -92,10 +92,7 @@ class BookingModel {
     return bookings;
   }
   
-  // Crear una nueva reserva
   static async createBooking(userId, serviceId, bookingDate, bookingTime, employeeId = null, businessId = null, notes = null) {
-    // Convertir booking_time de "HH:MM" a DateTime para la fecha actual
-    // MySQL TIME requiere un DateTime completo, pero solo usa la parte de la hora
     const timeDateTime = new Date(`1970-01-01T${bookingTime}:00.000Z`);
     
     const booking = await prisma.bookings.create({
@@ -107,7 +104,7 @@ class BookingModel {
         employee_id: employeeId,
         business_id: businessId,
         notes: notes,
-        status: 'confirmada' // Crear automáticamente como confirmada
+        status: 'confirmada'
       }
     });
     

@@ -13,7 +13,7 @@ const authenticateToken = async (req, res, next) => {
   try {
     logger.info('Authentication check for:', req.method, req.originalUrl);
 
-    const authHeader = req.headers['authorization'];    // Verificar si se proporcionan headers de autenticación
+    const authHeader = req.headers['authorization'];
     if (!authHeader) {
       return apiError(res, 401, 'Headers de autenticación no proporcionados en la petición.');
     }
@@ -21,7 +21,7 @@ const authenticateToken = async (req, res, next) => {
       return apiError(res, 401, 'Formato de header de autenticación inválido. Esperado: Bearer <token>');
     }
 
-    const token = authHeader.split(' ')[1];    // Verificar si se proporciona el token
+    const token = authHeader.split(' ')[1];
     if (!token) {
       return apiError(res, 401, 'Token de acceso no proporcionado en la petición.');
     }
@@ -36,7 +36,6 @@ const authenticateToken = async (req, res, next) => {
       return apiError(res, 403, 'Token de acceso inválido proporcionado, por favor inicia sesión nuevamente.');
     }
 
-    // Adjuntar información del usuario a la petición
     req.user = {
       id: user.id,
       email: user.email,

@@ -44,7 +44,6 @@ class AnalyticsController {
         timestamp: new Date().toISOString()
       });
 
-      // Obtener estadísticas principales en paralelo para mejor rendimiento
       const [
         totalBookings,
         totalRevenue,

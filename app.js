@@ -25,7 +25,7 @@ const app = express();
 
 // Configuración CORS
 const corsOptions = {
-  origin: credentialsUtil.server.corsOrigin,
+  origin: credentialsUtil.server.corsOrigin ? credentialsUtil.server.corsOrigin : ['http://localhost:8100', 'http://localhost:8101', 'http://bookingshub.es', 'https://bookingshub.es', 'http://www.bookingshub.es', 'https://www.bookingshub.es', 'http://localhost', 'https://localhost'],
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

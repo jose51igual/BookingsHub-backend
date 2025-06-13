@@ -142,8 +142,8 @@ const login = async (req, res) => {
 };
 
 /**
- * Google OAuth authentication controller
- * Handles Google Sign-In integration
+ * Google OAuth
+ * Gestiona la autenticación de usuarios a través de Google
  */
 const googleAuth = async (req, res) => {
   try {
@@ -154,7 +154,8 @@ const googleAuth = async (req, res) => {
     });
     
     // Verificar token de Google y obtener información del usuario
-    const googleUserInfo = await AuthModel.verifyGoogleToken(token);    if (!googleUserInfo) {
+    const googleUserInfo = await AuthModel.verifyGoogleToken(token);    
+    if (!googleUserInfo) {
       return apiError(res, 400, 'Invalid Google token', {
         details: ['The provided Google token is invalid or expired']
       });
@@ -208,8 +209,101 @@ const googleAuth = async (req, res) => {
 };
 
 /**
- * Token refresh controller
- * Generates new access token from valid refresh token
+ * Google OAuth - Iniciar autenticación
+ * Redirige al usuario a Google para autorización
+ */
+const googleLogin = async (req, res) => {
+  try {
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+      `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
+      `redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&` +
+      `response_type=code&` +
+      `scope=openid email profile&` +
+      `access_type=offline`;
+
+    logger.info('Redirecting to Google OAuth', {
+      timestamp: new Date().toISOString()
+    });
+
+    res.redirect(googleAuthUrl);
+  } catch (error) {
+    logger.error('Error initiating Google OAuth:', error);
+    return apiError(res, 500, 'Internal server error', {
+      details: ['Error al iniciar la autenticación con Google']
+    });
+  }
+};
+
+/**
+ * Google OAuth - Callback
+ * Procesa el código de autorización de Google
+ */
+const googleCallback = async (req, res) => {
+  try {
+    const { code, error } = req.query;
+
+    if (error) {
+      logger.error('Google OAuth error:', error);
+      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=${error}`);
+    }
+
+    if (!code) {
+      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=no_code`);
+    }
+
+    logger.info('Processing Google OAuth callback', {
+      timestamp: new Date().toISOString()
+    });
+
+    // Intercambiar código por tokens
+    const googleUserInfo = await AuthModel.exchangeCodeForUserInfo(code);
+    
+    if (!googleUserInfo) {
+      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=invalid_code`);
+    }
+
+    // Verificar si el usuario existe
+    let user = await AuthModel.findByEmail(googleUserInfo.email);
+    
+    if (!user) {
+      // Crear nuevo usuario desde información de Google
+      const userId = await AuthModel.createUserFromGoogle(
+        googleUserInfo.name,
+        googleUserInfo.email.toLowerCase().trim(),
+        googleUserInfo.googleId,
+        'cliente'
+      );
+      
+      user = await UserModel.findById(userId);
+    }
+
+    // Generar token JWT
+    const accessToken = generateAccessToken(user.id, user.email, user.role);
+    
+    logger.info('Google authentication successful via callback', {
+      userId: user.id,
+      email: user.email,
+      timestamp: new Date().toISOString()
+    });
+
+    // Redirigir al frontend con el token
+    const frontendUrl = `${process.env.FRONTEND_URL}/auth/success?token=${accessToken}&user=${encodeURIComponent(JSON.stringify({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }))}`;
+
+    res.redirect(frontendUrl);
+
+  } catch (error) {
+    logger.error('Error in Google OAuth callback:', error);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=server_error`);
+  }
+};
+
+/**
+ * Genera un nuevo token de acceso utilizando el refresh token
  */
 const refreshToken = async (req, res) => {
   try {
@@ -217,14 +311,14 @@ const refreshToken = async (req, res) => {
       if (!refreshToken) {
       return apiError(res, 401, 'Refresh token not provided');
     }
-    
-    // Verificar refresh token (implementación necesaria)
-    // Por ahora, solo retornamos un nuevo token de acceso    
+
+    const nuevoTokenDeAcceso = generateAccessToken(req.user.id, req.user.email, req.user.role);
+
     return apiResponse(res, 200, {
       success: true,
       message: 'Token refreshed successfully',
       data: {
-        // token: nuevoTokenDeAcceso
+        token: nuevoTokenDeAcceso
       }
     });
     
@@ -239,12 +333,10 @@ const refreshToken = async (req, res) => {
 };
 
 /**
- * Logout controller
- * Invalidates user session (for token blacklisting implementation)
+ * Cerrar sesión del usuario
  */
 const logout = async (req, res) => {
   try {
-    // En una aplicación real, aquí se agregaría el token a una lista negra
     logger.info('User logout initiated', {
       userId: req.user?.id,
       timestamp: new Date().toISOString()
@@ -269,6 +361,8 @@ module.exports = {
   register,
   login,
   googleAuth,
+  googleLogin,
+  googleCallback,
   refreshToken,
   logout
 };

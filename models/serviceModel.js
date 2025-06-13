@@ -74,7 +74,6 @@ class ServiceModel {
     return business !== null;
   }
   
-  // Crear un nuevo servicio
   static async createService(businessId, name, description, duration, price, category) {
     const service = await prisma.services.create({
       data: {
@@ -105,7 +104,6 @@ class ServiceModel {
     return service && service.businesses.user_id === parseInt(userId);
   }
   
-  // Actualizar un servicio
   static async updateService(serviceId, name, description, duration, price, category) {
     await prisma.services.update({
       where: { id: parseInt(serviceId) },
@@ -120,7 +118,6 @@ class ServiceModel {
     return true;
   }
   
-  // Eliminar un servicio
   static async deleteService(serviceId) {
     await prisma.services.delete({
       where: { id: parseInt(serviceId) }

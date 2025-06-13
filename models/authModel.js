@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const { SECRET_KEY } = require('../middlewares/auth');
+const logger = require('../utils/logger');
 
 // Crear un cliente OAuth2 para verificar tokens de Google
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -116,6 +117,58 @@ class AuthModel {
     });
     
     return true;
+  }
+
+  // Intercambiar código de Google por información del usuario
+  static async exchangeCodeForUserInfo(code) {
+    try {
+      // Intercambiar código por tokens
+      const response = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: process.env.GOOGLE_CLIENT_ID,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET,
+          code: code,
+          grant_type: 'authorization_code',
+          redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+        }),
+      });
+
+      const tokens = await response.json();
+
+      if (!tokens.access_token) {
+        logger.error('Error getting access token from Google:', tokens);
+        return null;
+      }
+
+      // Obtener información del usuario con el access token
+      const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+      });
+
+      const userInfo = await userResponse.json();
+
+      if (!userInfo.id) {
+        logger.error('Error getting user info from Google:', userInfo);
+        return null;
+      }
+
+      return {
+        googleId: userInfo.id,
+        email: userInfo.email,
+        name: userInfo.name,
+        picture: userInfo.picture
+      };
+
+    } catch (error) {
+      logger.error('Error exchanging code for user info:', error);
+      return null;
+    }
   }
 }
 

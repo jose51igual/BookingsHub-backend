@@ -162,6 +162,39 @@ router.post('/google',
 
 /**
  * @swagger
+ * /api/auth/google/login:
+ *   get:
+ *     summary: Iniciar autenticación con Google
+ *     tags: [Auth]
+ *     responses:
+ *       302:
+ *         description: Redirección a Google OAuth
+ */
+router.get('/google/login', authController.googleLogin);
+
+/**
+ * @swagger
+ * /api/auth/google/callback:
+ *   get:
+ *     summary: Callback de Google OAuth
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: query
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Código de autorización de Google
+ *     responses:
+ *       302:
+ *         description: Redirección al frontend con token
+ *       400:
+ *         description: Error en el código de autorización
+ */
+router.get('/google/callback', authController.googleCallback);
+
+/**
+ * @swagger
  * /api/auth/refresh:
  *   post:
  *     summary: Renovar token de acceso
