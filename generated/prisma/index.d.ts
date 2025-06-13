@@ -6784,12 +6784,10 @@ export namespace Prisma {
 
   export type UsersAvgAggregateOutputType = {
     id: number | null
-    phone: number | null
   }
 
   export type UsersSumAggregateOutputType = {
     id: number | null
-    phone: number | null
   }
 
   export type UsersMinAggregateOutputType = {
@@ -6797,7 +6795,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    phone: number | null
+    phone: string | null
     role: $Enums.users_role | null
     created_at: Date | null
     google_id: string | null
@@ -6808,7 +6806,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    phone: number | null
+    phone: string | null
     role: $Enums.users_role | null
     created_at: Date | null
     google_id: string | null
@@ -6829,12 +6827,10 @@ export namespace Prisma {
 
   export type UsersAvgAggregateInputType = {
     id?: true
-    phone?: true
   }
 
   export type UsersSumAggregateInputType = {
     id?: true
-    phone?: true
   }
 
   export type UsersMinAggregateInputType = {
@@ -6962,7 +6958,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone: number | null
+    phone: string | null
     role: $Enums.users_role
     created_at: Date | null
     google_id: string | null
@@ -7035,7 +7031,7 @@ export namespace Prisma {
       name: string
       email: string
       password: string
-      phone: number | null
+      phone: string | null
       role: $Enums.users_role
       created_at: Date | null
       google_id: string | null
@@ -7415,7 +7411,7 @@ export namespace Prisma {
     readonly name: FieldRef<"users", 'String'>
     readonly email: FieldRef<"users", 'String'>
     readonly password: FieldRef<"users", 'String'>
-    readonly phone: FieldRef<"users", 'Int'>
+    readonly phone: FieldRef<"users", 'String'>
     readonly role: FieldRef<"users", 'users_role'>
     readonly created_at: FieldRef<"users", 'DateTime'>
     readonly google_id: FieldRef<"users", 'String'>
@@ -8022,6 +8018,7 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     password: 'password',
+    phone: 'phone',
     google_id: 'google_id'
   };
 
@@ -8520,7 +8517,7 @@ export namespace Prisma {
     name?: StringFilter<"users"> | string
     email?: StringFilter<"users"> | string
     password?: StringFilter<"users"> | string
-    phone?: IntNullableFilter<"users"> | number | null
+    phone?: StringNullableFilter<"users"> | string | null
     role?: Enumusers_roleFilter<"users"> | $Enums.users_role
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
     google_id?: StringNullableFilter<"users"> | string | null
@@ -8552,7 +8549,7 @@ export namespace Prisma {
     NOT?: usersWhereInput | usersWhereInput[]
     name?: StringFilter<"users"> | string
     password?: StringFilter<"users"> | string
-    phone?: IntNullableFilter<"users"> | number | null
+    phone?: StringNullableFilter<"users"> | string | null
     role?: Enumusers_roleFilter<"users"> | $Enums.users_role
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
     google_id?: StringNullableFilter<"users"> | string | null
@@ -8585,7 +8582,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"users"> | string
     email?: StringWithAggregatesFilter<"users"> | string
     password?: StringWithAggregatesFilter<"users"> | string
-    phone?: IntNullableWithAggregatesFilter<"users"> | number | null
+    phone?: StringNullableWithAggregatesFilter<"users"> | string | null
     role?: Enumusers_roleWithAggregatesFilter<"users"> | $Enums.users_role
     created_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     google_id?: StringNullableWithAggregatesFilter<"users"> | string | null
@@ -9015,7 +9012,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -9029,7 +9026,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -9042,7 +9039,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9056,7 +9053,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9070,7 +9067,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -9080,7 +9077,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9091,7 +9088,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9699,7 +9696,6 @@ export namespace Prisma {
 
   export type usersAvgOrderByAggregateInput = {
     id?: SortOrder
-    phone?: SortOrder
   }
 
   export type usersMaxOrderByAggregateInput = {
@@ -9726,7 +9722,6 @@ export namespace Prisma {
 
   export type usersSumOrderByAggregateInput = {
     id?: SortOrder
-    phone?: SortOrder
   }
 
   export type Enumusers_roleWithAggregatesFilter<$PrismaModel = never> = {
@@ -10593,7 +10588,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -10606,7 +10601,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -10734,7 +10729,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10747,7 +10742,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10872,7 +10867,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -10885,7 +10880,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -11032,7 +11027,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11045,7 +11040,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11326,7 +11321,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -11339,7 +11334,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    phone?: number | null
+    phone?: string | null
     role?: $Enums.users_role
     created_at?: Date | string | null
     google_id?: string | null
@@ -11415,7 +11410,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11428,7 +11423,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    phone?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: Enumusers_roleFieldUpdateOperationsInput | $Enums.users_role
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null

@@ -166,12 +166,12 @@ const googleAuth = async (req, res) => {
     
     if (!user) {
       // Crear nuevo usuario desde información de Google
-      const userId = await AuthModel.createUserFromGoogle({
-        name: googleUserInfo.name,
-        email: googleUserInfo.email.toLowerCase().trim(),
-        googleId: googleUserInfo.googleId,
-        role: config.roles.USER
-      });
+      const userId = await AuthModel.createUserFromGoogle(
+        googleUserInfo.name,
+        googleUserInfo.email.toLowerCase().trim(),
+        googleUserInfo.googleId,
+        'cliente'
+      );
       
       user = await UserModel.findById(userId);
     }

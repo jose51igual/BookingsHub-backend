@@ -22,16 +22,13 @@ class AuthModel {
   static async createUser(name, email, password, role, phone = null) {
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Convertir phone a entero si es un string
-    const phoneInt = phone ? parseInt(phone, 10) : null;
-    
     const user = await prisma.users.create({
       data: {
         name: name,
         email: email,
         password: hashedPassword,
         role: role,
-        phone: phoneInt
+        phone: phone
       }
     });
     

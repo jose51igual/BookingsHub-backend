@@ -237,6 +237,7 @@ exports.Prisma.usersOrderByRelevanceFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
+  phone: 'phone',
   google_id: 'google_id'
 };
 exports.bookings_status = exports.$Enums.bookings_status = {
