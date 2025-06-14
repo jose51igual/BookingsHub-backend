@@ -312,4 +312,4 @@ Si tienes problemas:
 
 1. Revisa los logs: `npm run pm2:logs`
 2. Verifica el estado: `npm run pm2:status`
-3. Consulta la documentación: `/api-docs`# Force refresh vie 13 jun 2025 00:48:44 CEST
+3. Consulta la documentación: `/api-docs`
