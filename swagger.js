@@ -8,23 +8,21 @@ const swaggerDefinition = {
   info: {
     title: 'Bookings Hub API',
     version: '1.0.0',
-    description: 'API REST profesional para gestión de reservas de servicios',
-    contact: {
+    description: 'API REST profesional para gestión de reservas de servicios',    contact: {
       name: 'Bookings Hub Team',
-      email: 'support@bookingshub.com'
+      email: 'support@bookingshub.es'
     },
     license: {
       name: 'MIT',
       url: 'https://opensource.org/licenses/MIT'
-    }
-  },
+    }  },
   servers: [
     {
-      url: `http://localhost:${config.PORT}`,
+      url: `http://localhost:${config.server?.port || 3000}`,
       description: 'Servidor de desarrollo'
     },
     {
-      url: 'https://api.bookingshub.com',
+      url: 'https://api.bookingshub.es',
       description: 'Servidor de producción'
     }
   ],
