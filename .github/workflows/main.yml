@@ -75,11 +75,12 @@ jobs:
           PORT=${{ secrets.PORT || 3000 }}
           DATABASE_URL="mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT || 3306 }}/${{ secrets.DB_NAME }}"
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN || '24h' }}
+          JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN || '5m' }}
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback' }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/auth/google/callback' }}
           LOG_LEVEL=${{ secrets.LOG_LEVEL || 'info' }}
+          FRONTEND_URL=${{ secrets.FRONTEND_URL || 'http://localhost:8100' }}
           EOF
           
           # Configurar base de datos
