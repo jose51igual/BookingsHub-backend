@@ -115,10 +115,14 @@ class AuthModel {
     
     return true;
   }
-
   // Intercambiar código de Google por información del usuario
   static async exchangeCodeForUserInfo(code) {
     try {
+      logger.info('Exchanging Google authorization code', {
+        codeLength: code.length,
+        redirectUri: process.env.GOOGLE_REDIRECT_URI
+      });
+
       // Intercambiar código por tokens
       const response = await fetch('https://oauth2.googleapis.com/token', {
         method: 'POST',
@@ -136,10 +140,21 @@ class AuthModel {
 
       const tokens = await response.json();
 
-      if (!tokens.access_token) {
-        logger.error('Error getting access token from Google:', tokens);
+      if (!response.ok) {
+        logger.error('Google token exchange failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: tokens
+        });
         return null;
       }
+
+      if (!tokens.access_token) {
+        logger.error('No access token received from Google:', tokens);
+        return null;
+      }
+
+      logger.info('Successfully obtained Google access token');
 
       // Obtener información del usuario con el access token
       const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
@@ -150,10 +165,24 @@ class AuthModel {
 
       const userInfo = await userResponse.json();
 
-      if (!userInfo.id) {
-        logger.error('Error getting user info from Google:', userInfo);
+      if (!userResponse.ok) {
+        logger.error('Failed to get user info from Google:', {
+          status: userResponse.status,
+          statusText: userResponse.statusText,
+          error: userInfo
+        });
         return null;
       }
+
+      if (!userInfo.id) {
+        logger.error('Invalid user info received from Google:', userInfo);
+        return null;
+      }
+
+      logger.info('Successfully obtained Google user info', {
+        userId: userInfo.id,
+        email: userInfo.email
+      });
 
       return {
         googleId: userInfo.id,

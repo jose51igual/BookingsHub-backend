@@ -241,17 +241,27 @@ const googleLogin = async (req, res) => {
 const googleCallback = async (req, res) => {
   try {
     const { code, error } = req.query;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8100';
+
+    logger.info('Google OAuth callback received', {
+      hasCode: !!code,
+      hasError: !!error,
+      frontendUrl,
+      timestamp: new Date().toISOString()
+    });
 
     if (error) {
       logger.error('Google OAuth error:', error);
-      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=${error}`);
+      return res.redirect(`${frontendUrl}/auth/error?error=${error}`);
     }
 
     if (!code) {
-      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=no_code`);
+      logger.error('No authorization code received');
+      return res.redirect(`${frontendUrl}/auth/error?error=no_code`);
     }
 
-    logger.info('Processing Google OAuth callback', {
+    logger.info('Processing Google OAuth callback with code', {
+      codeLength: code.length,
       timestamp: new Date().toISOString()
     });
 
@@ -259,7 +269,8 @@ const googleCallback = async (req, res) => {
     const googleUserInfo = await AuthModel.exchangeCodeForUserInfo(code);
     
     if (!googleUserInfo) {
-      return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=invalid_code`);
+      logger.error('Failed to exchange code for user info');
+      return res.redirect(`${frontendUrl}/auth/error?error=invalid_code`);
     }
 
     // Verificar si el usuario existe
@@ -284,21 +295,19 @@ const googleCallback = async (req, res) => {
       userId: user.id,
       email: user.email,
       timestamp: new Date().toISOString()
-    });
-
-    // Redirigir al frontend con el token
-    const frontendUrl = `${process.env.FRONTEND_URL}/auth/success?token=${accessToken}&user=${encodeURIComponent(JSON.stringify({
+    });    // Redirigir al frontend con el token
+    const successUrl = `${frontendUrl}/auth/success?token=${accessToken}&user=${encodeURIComponent(JSON.stringify({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role
     }))}`;
 
-    res.redirect(frontendUrl);
-
+    res.redirect(successUrl);
   } catch (error) {
     logger.error('Error in Google OAuth callback:', error);
-    res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=server_error`);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8100';
+    res.redirect(`${frontendUrl}/auth/error?error=server_error`);
   }
 };
 
