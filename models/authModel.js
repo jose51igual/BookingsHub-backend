@@ -87,7 +87,6 @@ class AuthModel {
   
   // Crear usuario desde datos de Google
   static async createUserFromGoogle(name, email, googleId, role) {
-    // Generar una contraseña aleatoria que no será usada
     const randomPassword = crypto.randomBytes(16).toString('hex');
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     

@@ -128,40 +128,6 @@ router.post('/login',
 
 /**
  * @swagger
- * /api/auth/google:
- *   post:
- *     summary: Autenticación con Google OAuth
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - token
- *             properties:
- *               token:
- *                 type: string
- *                 description: Token de Google OAuth
- *                 example: "ya29.a0AfH6SMC..."
- *     responses:
- *       200:
- *         description: Autenticación exitosa
- *       400:
- *         $ref: '#/components/responses/ValidationError'
- *       401:
- *         description: Token de Google inválido
- *       500:
- *         $ref: '#/components/responses/InternalServerError'
- */
-router.post('/google', 
-  validateRequest(schemas.auth.google, 'body'), 
-  authController.googleAuth
-);
-
-/**
- * @swagger
  * /api/auth/google/login:
  *   get:
  *     summary: Iniciar autenticación con Google
