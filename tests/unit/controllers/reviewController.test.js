@@ -102,9 +102,8 @@ describe('ReviewController', () => {
       expect(apiError).toHaveBeenCalledWith(res, 500, 'Error interno del servidor', error);
     });
   });
-
   describe('createReview', () => {
-    it('should create a review successfully', async () => {
+    it('should create a review successfully when no existing review', async () => {
       const reviewData = {
         business_id: 1,
         rating: 5,
@@ -113,12 +112,12 @@ describe('ReviewController', () => {
       const reviewId = 1;
 
       req.body = reviewData;
-      ReviewModel.userHasReviewed.mockResolvedValue(false);
+      ReviewModel.getUserReviewForBusiness.mockResolvedValue(null); // No existing review
       ReviewModel.createReview.mockResolvedValue(reviewId);
 
       await ReviewController.createReview(req, res);
 
-      expect(ReviewModel.userHasReviewed).toHaveBeenCalledWith(req.user.id, reviewData.business_id);
+      expect(ReviewModel.getUserReviewForBusiness).toHaveBeenCalledWith(req.user.id, reviewData.business_id);
       expect(ReviewModel.createReview).toHaveBeenCalledWith(
         req.user.id,
         reviewData.business_id,
@@ -142,36 +141,43 @@ describe('ReviewController', () => {
       });
     });
 
-    it('should not create duplicate review for same business', async () => {
+    it('should update existing review when duplicate review attempted', async () => {
       const reviewData = {
         business_id: 1,
         rating: 5,
         comment: 'Excellent service!'
       };
+      const existingReview = { id: 10, user_id: 1, business_id: 1 };
 
       req.body = reviewData;
-      ReviewModel.userHasReviewed.mockResolvedValue(true);
+      ReviewModel.getUserReviewForBusiness.mockResolvedValue(existingReview);
+      ReviewModel.updateReview.mockResolvedValue(true);
 
       await ReviewController.createReview(req, res);
 
-      expect(ReviewModel.userHasReviewed).toHaveBeenCalledWith(req.user.id, reviewData.business_id);
+      expect(ReviewModel.getUserReviewForBusiness).toHaveBeenCalledWith(req.user.id, reviewData.business_id);
+      expect(ReviewModel.updateReview).toHaveBeenCalledWith(
+        existingReview.id,
+        reviewData.rating,
+        reviewData.comment
+      );
       expect(ReviewModel.createReview).not.toHaveBeenCalled();
-      expect(logger.warn).toHaveBeenCalledWith(
-        'User attempted to create duplicate review',
+      expect(logger.info).toHaveBeenCalledWith(
+        'Review updated automatically',
         expect.objectContaining({
+          reviewId: existingReview.id,
           userId: req.user.id,
           businessId: reviewData.business_id,
+          rating: reviewData.rating,
           timestamp: expect.any(String)
         })
       );
-      expect(apiError).toHaveBeenCalledWith(
-        res,
-        409,
-        'Ya has dejado una reseña para este negocio. Puedes actualizarla en lugar de crear una nueva'
-      );
-    });
-
-    it('should handle empty comment when creating review', async () => {
+      expect(apiResponse).toHaveBeenCalledWith(res, 200, {
+        success: true,
+        data: { reviewId: existingReview.id },
+        message: 'Reseña actualizada exitosamente'
+      });
+    });    it('should handle empty comment when creating review', async () => {
       const reviewData = {
         business_id: 1,
         rating: 5,
@@ -180,7 +186,7 @@ describe('ReviewController', () => {
       const reviewId = 1;
 
       req.body = reviewData;
-      ReviewModel.userHasReviewed.mockResolvedValue(false);
+      ReviewModel.getUserReviewForBusiness.mockResolvedValue(null); // No existing review
       ReviewModel.createReview.mockResolvedValue(reviewId);
 
       await ReviewController.createReview(req, res);
@@ -193,7 +199,7 @@ describe('ReviewController', () => {
       );
     });
 
-    it('should handle errors when creating review', async () => {
+    it('should handle errors when creating/updating review', async () => {
       const reviewData = {
         business_id: 1,
         rating: 5,
@@ -202,7 +208,7 @@ describe('ReviewController', () => {
       const error = new Error('Database error');
 
       req.body = reviewData;
-      ReviewModel.userHasReviewed.mockRejectedValue(error);
+      ReviewModel.getUserReviewForBusiness.mockRejectedValue(error);
 
       await ReviewController.createReview(req, res);
 
