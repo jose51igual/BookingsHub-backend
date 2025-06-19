@@ -377,10 +377,10 @@ const bookingSchemas = {
       'number.base': 'El ID del empleado debe ser un número',
       'number.integer': 'El ID del empleado debe ser un número entero',
       'number.positive': 'El ID del empleado debe ser positivo'
-    }),
-    booking_date: Joi.date().min('now').required().messages({
+    }),    
+    booking_date: Joi.date().min(new Date().setHours(0, 0, 0, 0)).required().messages({
       'date.base': 'La fecha debe ser válida',
-      'date.min': 'La fecha no puede ser en el pasado',
+      'date.min': 'La fecha no puede ser anterior al día actual',
       'any.required': 'La fecha de reserva es requerida'
     }),
     booking_time: Joi.string().pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/).required().messages({
