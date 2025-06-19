@@ -44,14 +44,13 @@ class ReviewController {
       return apiError(res, 500, 'Error interno del servidor', error);
     }
   }
-
   /**
-   * Crear una nueva reseña para un negocio
+   * Crear una nueva reseña para un negocio o actualizar si ya existe
    *
-   * @description Crea una nueva reseña para un negocio (solo usuarios autenticados)
+   * @description Crea una nueva reseña para un negocio o actualiza la existente si ya existe (solo usuarios autenticados)
    * @param {Request} req - Objeto de solicitud Express con datos de reseña en body
    * @param {Response} res - Objeto de respuesta Express
-   * @returns {Promise<Response>} Respuesta JSON con ID de reseña creada
+   * @returns {Promise<Response>} Respuesta JSON con ID de reseña creada o actualizada
    */
   static async createReview(req, res) {
     try {
@@ -59,37 +58,48 @@ class ReviewController {
       const userId = req.user.id;
       
       // Verificar si el usuario ya reseñó este negocio
-      const hasReviewed = await ReviewModel.userHasReviewed(userId, business_id);
+      const existingReview = await ReviewModel.getUserReviewForBusiness(userId, business_id);
       
-      if (hasReviewed) {
-        logger.warn('User attempted to create duplicate review', {
+      if (existingReview) {
+        // Si ya existe una reseña, actualizarla
+        await ReviewModel.updateReview(existingReview.id, rating, comment?.trim() || null);
+        
+        logger.info('Review updated automatically', {
+          reviewId: existingReview.id,
           userId,
           businessId: business_id,
+          rating,
           timestamp: new Date().toISOString()
         });
-        return apiError(res, 409, 'Ya has dejado una reseña para este negocio. Puedes actualizarla en lugar de crear una nueva');
+        
+        return apiResponse(res, 200, {
+          success: true,
+          data: { reviewId: existingReview.id },
+          message: 'Reseña actualizada exitosamente'
+        });
+      } else {
+        // Si no existe, crear nueva reseña
+        const reviewId = await ReviewModel.createReview(
+          userId,
+          business_id,
+          rating,
+          comment?.trim() || null
+        );
+        
+        logger.info('Review created successfully', {
+          reviewId,
+          userId,
+          businessId: business_id,
+          rating,
+          timestamp: new Date().toISOString()
+        });
+        
+        return apiResponse(res, 201, {
+          success: true,
+          data: { reviewId },
+          message: 'Reseña creada exitosamente'
+        });
       }
-      
-      const reviewId = await ReviewModel.createReview(
-        userId,
-        business_id,
-        rating,
-        comment?.trim() || null
-      );
-      
-      logger.info('Review created successfully', {
-        reviewId,
-        userId,
-        businessId: business_id,
-        rating,
-        timestamp: new Date().toISOString()
-      });
-      
-      return apiResponse(res, 201, {
-        success: true,
-        data: { reviewId },
-        message: 'Reseña creada exitosamente'
-      });
     } catch (error) {
       logger.error('Error creating review', {
         error: error.message,

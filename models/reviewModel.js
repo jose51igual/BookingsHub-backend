@@ -65,6 +65,17 @@ class ReviewModel {
     });
     return review !== null;
   }
+
+  // Obtener la reseña existente de un usuario para un negocio específico
+  static async getUserReviewForBusiness(userId, businessId) {
+    const review = await prisma.reviews.findFirst({
+      where: {
+        user_id: parseInt(userId),
+        business_id: parseInt(businessId)
+      }
+    });
+    return review;
+  }
   
   // Actualizar una reseña
   static async updateReview(reviewId, rating, comment) {
